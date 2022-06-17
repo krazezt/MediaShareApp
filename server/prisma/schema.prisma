@@ -1,0 +1,181 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum ContentType {
+  POST
+  COLLECTION
+}
+
+enum PostType {
+  IMAGE
+  VIDEO
+  MUSIC
+}
+
+enum Accessibility {
+  PRIVATE
+  SHARE
+  PUBLIC
+}
+
+enum VoteType {
+  UP
+  DOWN
+}
+
+enum ReportStatus {
+  PENDING
+  PROCESSING
+  ACCEPTED
+  REJECTED
+}
+
+model User {
+  id        Int         @id @default(autoincrement())
+
+  email     String      @unique
+  hash      String
+
+  name      String
+  role      Role        @default(USER)
+  avatarURL String?
+
+  contents  Content[]
+  followedBy User[]     @relation("Follow", references: [id])
+  following  User[]     @relation("Follow", references: [id])
+
+  accessibleTo  Accessible[]
+  histories     History[]
+  comments      Comment[]
+  votes         Vote[]
+  reports       Report[]
+}
+
+model Content {
+  id        Int         @id   @default(autoincrement())
+
+  type          ContentType   @default(POST)
+  categoryName  String
+  authorId      Int
+  createdAt     DateTime      @default(now())
+  views         Int?
+
+  shareState    Accessibility @default(PUBLIC)
+  privateKey    String?
+  // id.toString() + Math.random().toString(36).slice(2, 7).toUpperCase();
+
+  post          Post?
+  collection    Collection?
+
+  accessibleBy  Accessible[]
+  histories     History[]
+  comments      Comment[]
+  votes         Vote[]
+  reports       Report[]
+
+  // Relations
+  category    Category    @relation(fields: [categoryName], references: [name])
+  author      User        @relation(fields: [authorId], references: [id])
+}
+
+model Category {
+  name    String          @id
+
+  contents   Content[]
+
+  closeTo    Category[]   @relation("CloseCategories", references: [name])
+  closeWith  Category[]   @relation("CloseCategories", references: [name])
+}
+
+model Post {
+  id            Int       @id
+  caption       String
+  type          PostType  @default(IMAGE)
+  mediaURL      String
+  createdAt     DateTime  @default(now())
+
+  content       Content   @relation(fields: [id], references: [id])
+
+  collections   Collection[]  @relation("PostInCollection")
+}
+
+model Collection {
+  id            Int       @id
+  title         String
+  createdAt     DateTime  @default(now())
+
+  content       Content   @relation(fields: [id], references: [id])
+
+  posts         Post[]        @relation("PostInCollection")
+}
+
+model Accessible {
+  userId        Int
+  contentId     Int
+  @@id([userId, contentId])
+
+  user          User      @relation(fields: [userId], references: [id])
+  content       Content   @relation(fields: [contentId], references: [id])
+}
+
+model History {
+  userId        Int
+  contentId     Int
+  @@id([userId, contentId])
+
+  createdAt     DateTime  @default(now())
+
+  user          User      @relation(fields: [userId], references: [id])
+  content       Content   @relation(fields: [contentId], references: [id])
+}
+
+model Comment {
+  id            Int       @id @default(autoincrement())
+
+  userId        Int
+  contentId     Int
+  createdAt     DateTime  @default(now())
+  commentContent  String
+
+  user          User      @relation(fields: [userId], references: [id])
+  content       Content   @relation(fields: [contentId], references: [id])
+}
+
+model Vote {
+  userId        Int
+  contentId     Int
+  @@id([userId, contentId])
+
+  createdAt     DateTime  @default(now())
+  type          VoteType  
+
+  user          User      @relation(fields: [userId], references: [id])
+  content       Content   @relation(fields: [contentId], references: [id])
+}
+
+model Report {
+  id            Int       @id @default(autoincrement())
+
+  userId        Int
+  contentId     Int
+  createdAt     DateTime  @default(now())
+  reason        String
+  status        ReportStatus
+
+  user          User      @relation(fields: [userId], references: [id])
+  content       Content   @relation(fields: [contentId], references: [id])
+}
