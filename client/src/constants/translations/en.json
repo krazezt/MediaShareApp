@@ -62,7 +62,7 @@
     "rental": "Rental",
     "profile": "Profile",
     "settings": "Settings",
-    "register": "Create account",
+    "register": "Register",
     "extra": "Extra - Automotive"
   },
   "navigation": {
@@ -98,6 +98,7 @@
     "subtitle": "Register with"
   },
   "profile": {
+    "changeAvatar": "Change avatar",
     "title": "Profile",
     "posts": "Posts",
     "followers": "Followers",
