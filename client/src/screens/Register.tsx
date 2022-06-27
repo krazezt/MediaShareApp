@@ -88,7 +88,7 @@ const Register = () => {
       );
 
       await setAccessToken(result.data.token);
-      navigation.navigate(t('screens.home'));
+      navigation.navigate(t('screens.profile'));
     } catch (error: any) {
       console.log(error.response.data.message);
     }
@@ -109,7 +109,7 @@ const Register = () => {
               row
               flex={0}
               justify="flex-start"
-              onPress={() => navigation.goBack()}>
+              onPress={() => (navigation as any).openDrawer()}>
               <Image
                 radius={0}
                 width={10}

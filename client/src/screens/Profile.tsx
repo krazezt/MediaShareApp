@@ -5,6 +5,9 @@ import { useNavigation } from '@react-navigation/core';
 
 import { Block, Button, Image, Text } from '../components/';
 import { useData, useTheme, useTranslation } from '../hooks/';
+import { Icon } from 'native-base';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { ChangeAvatarButton } from '../components/Buttons/ChangeAvatarButton';
 
 const isAndroid = Platform.OS === 'android';
 
@@ -38,22 +41,23 @@ const Profile = () => {
   );
 
   const getUserInfo = async () => {
-    const user: any = (await callAPI('ME', 'GET'));
+    const user: any = await callAPI('ME', 'GET');
     if (user === undefined) navigation.navigate(t('screens.register'));
-    handleUser({
-      id: 1,
-      name: user.name,
-      department: 'EMT ~!',
-      stats: {
-        posts: 17,
-        followers: 230934,
-        following: 23,
-      },
-      about: '好きだよ、エミリア！',
-      avatar:
-        'https://pbs.twimg.com/profile_images/1525576080945401856/b-zC13dS_400x400.jpg',
-      social: { twitter: 'https://twitter.com/krazezt' },
-    });
+    else
+      handleUser({
+        id: 1,
+        name: user.name,
+        department: 'EMT ~!',
+        stats: {
+          posts: 17,
+          followers: 230934,
+          following: 23,
+        },
+        about: '好きだよ、エミリア！',
+        avatar:
+          'https://pbs.twimg.com/profile_images/1525576080945401856/b-zC13dS_400x400.jpg',
+        social: { twitter: 'https://twitter.com/krazezt' },
+      });
   };
 
   useEffect(() => {
@@ -75,23 +79,26 @@ const Profile = () => {
             paddingBottom={sizes.l}
             radius={sizes.cardRadius}
             source={assets.background}>
-            <Button
-              row
-              flex={0}
-              justify="flex-start"
-              onPress={() => navigation.goBack()}>
-              <Image
-                radius={0}
-                width={10}
-                height={18}
-                color={colors.white}
-                source={assets.arrow}
-                transform={[{ rotate: '180deg' }]}
-              />
-              <Text p white marginLeft={sizes.s}>
-                {t('profile.title')}
-              </Text>
-            </Button>
+            <Block row align="center" justify="space-between">
+              <Button
+                row
+                flex={0}
+                justify="flex-start"
+                onPress={() => (navigation as any).openDrawer()}>
+                <Image
+                  radius={0}
+                  width={10}
+                  height={18}
+                  color={colors.white}
+                  source={assets.arrow}
+                  transform={[{ rotate: '180deg' }]}
+                />
+                <Text p white marginLeft={sizes.s}>
+                  {t('common.goBack')}
+                </Text>
+              </Button>
+              <ChangeAvatarButton />
+            </Block>
             <Block flex={0} align="center">
               <Image
                 width={80}
