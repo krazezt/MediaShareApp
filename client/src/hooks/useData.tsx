@@ -22,8 +22,6 @@ import { useAccessToken } from './useAccessToken';
 import { API, APIRoutes } from '../constants/APIs';
 import axios, { AxiosError } from 'axios';
 import { Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useTranslation } from './useTranslation';
 
 export const DataContext = React.createContext({});
 

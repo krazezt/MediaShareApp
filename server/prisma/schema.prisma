@@ -55,8 +55,8 @@ model User {
   avatarURL String?
 
   contents  Content[]
-  followedBy User[]     @relation("Follow", references: [id])
-  following  User[]     @relation("Follow", references: [id])
+  followedBy User[]     @relation("Follow")
+  following  User[]     @relation("Follow")
 
   accessibleTo  Accessible[]
   histories     History[]
@@ -97,8 +97,8 @@ model Category {
 
   contents   Content[]
 
-  closeTo    Category[]   @relation("CloseCategories", references: [name])
-  closeWith  Category[]   @relation("CloseCategories", references: [name])
+  closeTo    Category[]   @relation("CloseCategories")
+  closeWith  Category[]   @relation("CloseCategories")
 }
 
 model Post {

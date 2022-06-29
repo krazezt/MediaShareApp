@@ -1,5 +1,6 @@
 {
   "common": {
+    "cancel": "Cancel",
     "appDetails": "App Details",
     "appName": "App name",
     "appVersion": "App version",
@@ -99,6 +100,10 @@
   },
   "profile": {
     "changeAvatar": "Change avatar",
+    "changeAvatarSuccess": "Avatar changed successfully!",
+    "changeAvatarFailed": "Change avatar Failed!",
+    "changeAvatarConfirm": "Yes, change my avatar.",
+    "changeAvatarWarning": "Are you sure want to change your avatar?",
     "title": "Profile",
     "posts": "Posts",
     "followers": "Followers",

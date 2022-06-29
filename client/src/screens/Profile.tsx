@@ -30,7 +30,6 @@ const Profile = () => {
         type === 'twitter'
           ? `https://twitter.com/${user?.social?.twitter}`
           : `https://dribbble.com/${user?.social?.dribbble}`;
-
       try {
         Linking.openURL(url);
       } catch (error) {
@@ -54,8 +53,7 @@ const Profile = () => {
           following: 23,
         },
         about: '好きだよ、エミリア！',
-        avatar:
-          'https://pbs.twimg.com/profile_images/1525576080945401856/b-zC13dS_400x400.jpg',
+        avatar: user.avatarURL,
         social: { twitter: 'https://twitter.com/krazezt' },
       });
   };
