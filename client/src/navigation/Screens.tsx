@@ -32,7 +32,7 @@ export default () => {
       options: { title: t('navigation.articles') },
     },
     {
-      name: 'Rental',
+      name: 'Pro',
       component: Pro,
       options: screenOptions.pro,
     },

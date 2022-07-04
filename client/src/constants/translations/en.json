@@ -1,6 +1,14 @@
 {
   "common": {
+    "createImageContent": "Upload an image",
+    "createVideoContent": "Upload a video",
+    "createMusicContent": "Upload a music track",
+    "aboutThisImage": "About this image",
+    "createImageContentSuccess": "Your image has been uploaded successfuly!",
+    "caption": "Caption",
+    "upload": "Upload",
     "cancel": "Cancel",
+    "success": "Success",
     "appDetails": "App Details",
     "appName": "App name",
     "appVersion": "App version",
@@ -111,7 +119,7 @@
     "aboutMe": "About me"
   },
   "pro": {
-    "title": "Soft UI PRO",
+    "title": "Krazezt",
     "alert": "This feature is available in PRO version",
     "components": "• {{count} Components (Buttons, Inputs, Cards, etc)",
     "screens": "• {{count} Screens (Shopping, Notifications, Chat, etc)",

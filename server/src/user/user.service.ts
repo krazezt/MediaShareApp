@@ -1,6 +1,6 @@
 import { Body, ForbiddenException, Injectable, Req } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { ChangeAvatarRequestDTO } from './dto/ChangeAvatarRequestDTO';
+import { ChangeAvatarRequestDTO } from './dto';
 import { Request } from 'express';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { User } from '@prisma/client';

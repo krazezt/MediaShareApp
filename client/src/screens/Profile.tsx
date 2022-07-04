@@ -45,15 +45,15 @@ const Profile = () => {
     else
       handleUser({
         id: 1,
-        name: user.name,
-        department: 'EMT ~!',
+        name: user.data.name,
+        department: 'Krazezt ~!',
         stats: {
           posts: 17,
           followers: 230934,
           following: 23,
         },
-        about: '好きだよ、エミリア！',
-        avatar: user.avatarURL,
+        about: 'About me!',
+        avatar: user.data.avatarURL,
         social: { twitter: 'https://twitter.com/krazezt' },
       });
   };

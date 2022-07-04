@@ -4,14 +4,8 @@ import {
   ref,
   uploadBytesResumable,
 } from 'firebase/storage';
+import { FirebaseFolders } from '../constants/config/FirebaseFolders';
 import getBlobFromUri from './GetBlobFromURI';
-
-export enum FirebaseFolders {
-  AVATAR = 'Avatars/',
-  IMAGE = 'Images/',
-  VIDEO = 'Videos/',
-  MUSIC = 'Musics/',
-}
 
 export default async function uploadImage(
   imageUri: string,
