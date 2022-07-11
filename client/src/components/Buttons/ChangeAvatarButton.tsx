@@ -1,11 +1,23 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { AlertDialog, Center, Button as RNBaseButton, Icon } from 'native-base';
-import React from 'react';
+import {
+  AlertDialog,
+  Center,
+  Button as RNBaseButton,
+  Icon,
+  useToast,
+  Box,
+} from 'native-base';
+import React, { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import uploadImage, { FirebaseFolders } from '../../functions/UploadImage';
+import { useData, useTranslation } from '../../hooks';
 
 export const ChangeAvatarButton = () => {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const { callAPI, handleUser } = useData();
+  const [isLoading, setIsLoading] = useState(false);
+  const toast = useToast();
+  const { t } = useTranslation();
 
   const onClose = () => setIsOpen(false);
 
@@ -19,14 +31,41 @@ export const ChangeAvatarButton = () => {
     });
 
     if (!image.cancelled) {
-      setIsOpen(false);
+      setIsLoading(true);
       const filename = image.uri.substring(image.uri.lastIndexOf('/') + 1);
       const imageURL = await uploadImage(
         image.uri,
         FirebaseFolders.AVATAR,
         filename,
       );
-      console.log("Uploaded, imageURL: " + imageURL);
+
+      const res = await callAPI('CHANGE_AVATAR', 'POST', {
+        avatarURL: imageURL,
+      });
+      handleUser({
+        id: 1,
+        name: res.name,
+        department: 'EMT ~!',
+        stats: {
+          posts: 17,
+          followers: 230934,
+          following: 23,
+        },
+        about: '好きだよ、エミリア！',
+        avatar: res.avatarURL,
+        social: { twitter: 'https://twitter.com/krazezt' },
+      });
+      setIsLoading(false);
+      setIsOpen(false);
+      toast.show({
+        render: () => {
+          return (
+            <Box bg="emerald.500" px="2" py="3" rounded="sm" mb={5}>
+              {t('profile.changeAvatarSuccess')}
+            </Box>
+          );
+        },
+      });
     }
   };
 
@@ -44,10 +83,10 @@ export const ChangeAvatarButton = () => {
         isOpen={isOpen}
         onClose={onClose}>
         <AlertDialog.Content>
-          <AlertDialog.CloseButton />
+          <AlertDialog.CloseButton isDisabled={isLoading} />
           <AlertDialog.Header>Change Avatar?</AlertDialog.Header>
           <AlertDialog.Body>
-            Are you sure want to change your avatar?
+            {t('profile.changeAvatarWarning')}
           </AlertDialog.Body>
           <AlertDialog.Footer>
             <RNBaseButton.Group space={2}>
@@ -55,11 +94,15 @@ export const ChangeAvatarButton = () => {
                 variant="unstyled"
                 colorScheme="coolGray"
                 onPress={onClose}
-                ref={cancelRef}>
-                Cancel
+                ref={cancelRef}
+                isDisabled={isLoading}>
+                {t('common.cancel')}
               </RNBaseButton>
-              <RNBaseButton colorScheme="primary" onPress={openImagePicker}>
-                Yes, change Avatar.
+              <RNBaseButton
+                colorScheme="primary"
+                onPress={openImagePicker}
+                isLoading={isLoading}>
+                {t('profile.changeAvatarConfirm')}
               </RNBaseButton>
             </RNBaseButton.Group>
           </AlertDialog.Footer>
