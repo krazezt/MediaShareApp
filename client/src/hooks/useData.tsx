@@ -20,7 +20,7 @@ import {
 import { light } from '../constants';
 import { useAccessToken } from './useAccessToken';
 import { API, APIRoutes } from '../constants/APIs';
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { Alert } from 'react-native';
 
 export const DataContext = React.createContext({});
@@ -41,32 +41,33 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
     APIRoute: keyof APIRoutes,
     method: 'GET' | 'POST',
     body?: any,
-  ): Promise<any> => {
-    let result: any;
+  ): Promise<AxiosResponse | undefined> => {
+    let result: AxiosResponse;
     try {
       switch (method) {
         case 'GET':
           result = await axios.get(API[APIRoute], {
             headers: { Authorization: 'Bearer ' + accessToken },
           });
-          break;
+          return result;
         case 'POST':
           result = await axios.post(API[APIRoute], body, {
             headers: { Authorization: 'Bearer ' + accessToken },
           });
-          break;
+          return result;
         default:
           break;
       }
-      return result.data;
     } catch (err: any) {
       const error = err as AxiosError;
       if (error.response) {
         if (error.response.status === 401) {
           setAccessToken('');
-          Alert.alert('Session Expired', 'Your session is expired', [
-            { text: 'OK', onPress: () => {} },
-          ]);
+          Alert.alert(
+            'Session Expired',
+            'Your session is expired, please login again!',
+            [{ text: 'OK', onPress: () => {} }],
+          );
         }
       }
     }

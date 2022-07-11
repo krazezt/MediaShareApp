@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString, IsUrl } from 'class-validator';
+import { IsNotEmpty, IsUrl } from 'class-validator';
 
 export class ChangeAvatarRequestDTO {
   @IsUrl()

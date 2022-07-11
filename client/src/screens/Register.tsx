@@ -24,7 +24,7 @@ interface IRegistrationValidation {
 }
 
 const Register = () => {
-  const { isDark } = useData();
+  const { isDark, callAPI } = useData();
   const { t } = useTranslation();
   const navigation = useNavigation();
   const [isValid, setIsValid] = useState<IRegistrationValidation>({

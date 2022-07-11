@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { JwtGuard } from 'src/auth/guard';
-import { ChangeAvatarRequestDTO } from './dto/ChangeAvatarRequestDTO';
+import { ChangeAvatarRequestDTO } from './dto';
 import { UserService } from './user.service';
 
 @Controller('user')

@@ -9,7 +9,8 @@ import {
 } from 'native-base';
 import React, { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
-import uploadImage, { FirebaseFolders } from '../../functions/UploadImage';
+import uploadImage from '../../functions/UploadImage';
+import { FirebaseFolders } from '../../constants/config/FirebaseFolders';
 import { useData, useTranslation } from '../../hooks';
 
 export const ChangeAvatarButton = () => {
@@ -25,7 +26,7 @@ export const ChangeAvatarButton = () => {
 
   const openImagePicker = async () => {
     let image = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       quality: 1,
     });
@@ -44,7 +45,7 @@ export const ChangeAvatarButton = () => {
       });
       handleUser({
         id: 1,
-        name: res.name,
+        name: res.data.name,
         department: 'EMT ~!',
         stats: {
           posts: 17,
@@ -52,7 +53,7 @@ export const ChangeAvatarButton = () => {
           following: 23,
         },
         about: '好きだよ、エミリア！',
-        avatar: res.avatarURL,
+        avatar: res.data.avatarURL,
         social: { twitter: 'https://twitter.com/krazezt' },
       });
       setIsLoading(false);

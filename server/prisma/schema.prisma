@@ -69,7 +69,6 @@ model Content {
   id        Int         @id   @default(autoincrement())
 
   type          ContentType   @default(POST)
-  categoryName  String
   authorId      Int
   createdAt     DateTime      @default(now())
   views         Int?
@@ -81,6 +80,7 @@ model Content {
   post          Post?
   collection    Collection?
 
+  categories    Category[]
   accessibleBy  Accessible[]
   histories     History[]
   comments      Comment[]
@@ -88,7 +88,6 @@ model Content {
   reports       Report[]
 
   // Relations
-  category    Category    @relation(fields: [categoryName], references: [name])
   author      User        @relation(fields: [authorId], references: [id])
 }
 

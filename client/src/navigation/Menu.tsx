@@ -141,7 +141,7 @@ const DrawerContent = (
     },
     {
       name: t('screens.rental'),
-      to: 'Home',
+      to: 'Pro',
       icon: assets.rental,
       loggedInShow: true,
       loggedOutShow: true,
