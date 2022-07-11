@@ -22,6 +22,8 @@ import { useAccessToken } from './useAccessToken';
 import { API, APIRoutes } from '../constants/APIs';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { Alert } from 'react-native';
+import { Audio } from 'expo-av';
+import { Sound } from 'expo-av/build/Audio';
 
 export const DataContext = React.createContext({});
 
@@ -36,6 +38,8 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
   const [articles, setArticles] = useState<IArticle[]>(ARTICLES);
   const [article, setArticle] = useState<IArticle>({});
   const { accessToken, setAccessToken } = useAccessToken();
+  const [sound, setSound] = useState<Sound>();
+  const [playingMusicId, setPlayingMusicId] = useState<number>(-1);
 
   const callAPI = async (
     APIRoute: keyof APIRoutes,
@@ -72,6 +76,34 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
       }
     }
   };
+
+  // Sound hooks
+  useEffect(() => {
+    return sound
+      ? () => {
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
+
+  async function playSound(
+    contentId: number,
+    audioUri: string,
+  ): Promise<boolean> {
+    setPlayingMusicId(contentId);
+    const { sound } = await Audio.Sound.createAsync({ uri: audioUri });
+    setSound(sound);
+    await sound.playAsync();
+    return true;
+  }
+
+  async function stopSound(): Promise<boolean> {
+    if (sound) {
+      setPlayingMusicId(-1);
+      sound.unloadAsync();
+    }
+    return true;
+  }
 
   // get isDark mode from storage
   const getIsDark = useCallback(async () => {
@@ -160,6 +192,9 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
     accessToken,
     setAccessToken,
     callAPI: callAPI,
+    playSound,
+    stopSound,
+    playingMusicId,
   };
 
   return (

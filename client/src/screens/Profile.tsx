@@ -53,7 +53,7 @@ const Profile = () => {
           following: 23,
         },
         about: 'About me!',
-        avatar: user.data.avatarURL,
+        avatar: user.data.avatarURL || "https://tinhdaunhuy.com/wp-content/uploads/2015/08/default-avatar.jpg",
         social: { twitter: 'https://twitter.com/krazezt' },
       });
   };

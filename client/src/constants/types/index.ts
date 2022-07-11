@@ -94,6 +94,9 @@ export interface IUseData {
     method: 'GET' | 'POST',
     body?: any,
   ) => Promise<any>;
+  playSound: (contentId: number, audioUri: string) => Promise<boolean>;
+  stopSound: () => Promise<boolean>;
+  playingMusicId: number;
 }
 
 export interface ITranslate {
