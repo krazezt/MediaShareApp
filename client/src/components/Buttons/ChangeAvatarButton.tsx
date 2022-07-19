@@ -45,15 +45,15 @@ export const ChangeAvatarButton = () => {
       });
       handleUser({
         id: 1,
-        name: res.data.name,
+        name: res?.data.name,
         department: 'EMT ~!',
         stats: {
-          posts: 17,
-          followers: 230934,
-          following: 23,
+          posts: 0,
+          followers: 0,
+          following: 0,
         },
-        about: '好きだよ、エミリア！',
-        avatar: res.data.avatarURL,
+        about: 'About me!',
+        avatar: res?.data.avatarURL,
         social: { twitter: 'https://twitter.com/krazezt' },
       });
       setIsLoading(false);

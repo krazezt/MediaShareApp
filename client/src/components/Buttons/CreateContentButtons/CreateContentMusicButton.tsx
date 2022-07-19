@@ -49,20 +49,20 @@ export default function CreateContentMusicButton() {
 
   const upload = async () => {
     setLoading(true);
-    const imageURL = await uploadAudio(
+    const audioURL = await uploadAudio(
       audio,
       FirebaseFolders.MUSIC,
       getFileName(audio),
     );
     const data: ICreateContentImageRequest = {
       caption: caption,
-      mediaURL: imageURL,
+      mediaURL: audioURL,
       shareState: ShareState.PUBLIC,
       categories: ['Game', 'Meme', 'Fun'],
     };
 
     try {
-      const res = { status: 201 }; // await callAPI('CREATE_CONTENT_IMAGE', 'POST', data);
+      const res = await callAPI("CREATE_CONTENT_MUSIC", 'POST', data);
       if (res.status === 201) {
         setModalVisible(false);
         toast.show({
@@ -123,17 +123,17 @@ export default function CreateContentMusicButton() {
             </FormControl>
             <FormControl mt="3">
               <Box h="150" w="100%" shadow="3" rounded="lg" bg="blue.50">
-                {/* {audio ? (
-                  <Video
+                {audio ? (
+                  <Image
                     source={{
-                      uri: audio,
+                      uri: "https://firebasestorage.googleapis.com/v0/b/test-native-e5a43.appspot.com/o/Assets%2Fmusic.png?alt=media&token=d0bd8303-7a2b-4a44-aa34-ce95a4f8c46a",
                     }}
-                    useNativeControls
-                    resizeMode="contain"
-                    isLooping
-                    style={{ width: '100%', height: '100%' }}
+                    alt="Alternate Text"
+                    w="100%"
+                    h="100%"
+                    rounded="lg"
                   />
-                ) : null} */}
+                ) : null}
                 <Fab
                   renderInPortal={false}
                   shadow={2}

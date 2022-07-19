@@ -5,14 +5,12 @@ import { useNavigation } from '@react-navigation/core';
 
 import { Block, Button, Image, Text } from '../components/';
 import { useData, useTheme, useTranslation } from '../hooks/';
-import { Icon } from 'native-base';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ChangeAvatarButton } from '../components/Buttons/ChangeAvatarButton';
 
 const isAndroid = Platform.OS === 'android';
 
 const Profile = () => {
-  const { user, handleUser, callAPI } = useData();
+  const { user, handleUser, callAPI, setAccessToken } = useData();
   const { t } = useTranslation();
   const navigation = useNavigation();
   const { assets, colors, sizes } = useTheme();
@@ -48,17 +46,31 @@ const Profile = () => {
         name: user.data.name,
         department: 'Krazezt ~!',
         stats: {
-          posts: 17,
-          followers: 230934,
-          following: 23,
+          posts: 0,
+          followers: 0,
+          following: 0,
         },
         about: 'About me!',
-        avatar: user.data.avatarURL || "https://tinhdaunhuy.com/wp-content/uploads/2015/08/default-avatar.jpg",
+        avatar: user.data.avatarURL,
         social: { twitter: 'https://twitter.com/krazezt' },
       });
   };
 
   useEffect(() => {
+    const defaultAvatar = "https://firebasestorage.googleapis.com/v0/b/mediashare-7dd4d.appspot.com/o/Avatars%2Fdefault.png?alt=media&token=7de5f2e3-c35d-4c71-b324-a9191653c8c3";
+    handleUser({
+      id: 1,
+      name: '',
+      department: '',
+      stats: {
+        posts: 0,
+        followers: 0,
+        following: 0,
+      },
+      about: '',
+      avatar: defaultAvatar,
+      social: { twitter: 'https://twitter.com/krazezt' },
+    });
     getUserInfo();
   }, []);
 
@@ -107,9 +119,6 @@ const Profile = () => {
               <Text h5 center white>
                 {user?.name}
               </Text>
-              <Text p center white>
-                {user?.department}
-              </Text>
               <Block row marginVertical={sizes.m}>
                 <Button
                   white
@@ -147,10 +156,13 @@ const Profile = () => {
                   radius={sizes.m}
                   color="rgba(255,255,255,0.2)"
                   outlined={String(colors.white)}
-                  onPress={() => handleSocialLink('dribbble')}>
+                  onPress={() => {
+                    setAccessToken('');
+                    navigation.navigate(t('screens.register'));
+                  }}>
                   <Ionicons
                     size={18}
-                    name="logo-dribbble"
+                    name="log-out-outline"
                     color={colors.white}
                   />
                 </Button>
@@ -214,7 +226,7 @@ const Profile = () => {
           <Block paddingHorizontal={sizes.sm} marginTop={sizes.s}>
             <Block row align="center" justify="space-between">
               <Text h5 semibold>
-                {t('common.album')}
+                {t('common.posts')}
               </Text>
               <Button>
                 <Text p primary semibold>
@@ -225,9 +237,7 @@ const Profile = () => {
             <Block row justify="space-between" wrap="wrap">
               <Image
                 resizeMode="cover"
-                source={{
-                  uri: 'https://pbs.twimg.com/profile_images/1525576080945401856/b-zC13dS_400x400.jpg',
-                }}
+                source={assets?.photo1}
                 style={{
                   width: IMAGE_VERTICAL_SIZE + IMAGE_MARGIN / 2,
                   height: IMAGE_VERTICAL_SIZE * 2 + IMAGE_VERTICAL_MARGIN,

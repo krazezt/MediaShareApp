@@ -4,8 +4,8 @@ import { Linking, StatusBar } from 'react-native';
 import { useTheme, useTranslation } from '../hooks/';
 import { Image } from '../components/';
 import NewContentStagger from '../components/Staggers/NewContentStagger';
-import MusicPlayerCard from '../components/MediaPlayerCards/MusicPlayerCard';
 import { Center } from 'native-base';
+import VideoPlayerCard from '../components/MediaPlayerCards/VideoPlayerCard';
 
 const Pro = () => {
   const { t } = useTranslation();
@@ -28,9 +28,15 @@ const Pro = () => {
       style={{ flex: 1 }}>
       <NewContentStagger />
       <Center flex={1} px="4">
-        <MusicPlayerCard
+        <VideoPlayerCard
           contentId={1}
-          audioUri="https://firebasestorage.googleapis.com/v0/b/test-native-e5a43.appspot.com/o/Musics%2Faf36202b-55d1-47b6-9f20-93041f0157c4.mp3?alt=media&token=27134054-98aa-428b-b829-11fdcc80c82a"
+          avatarUri="https://haycafe.vn/wp-content/uploads/2021/11/Anh-avatar-dep-chat-lam-hinh-dai-dien-600x600.jpg"
+          categories={[
+            { name: 'Category 1' },
+            { name: 'Category 2' },
+            { name: 'Category 3' },
+          ]}
+          videoUri="https://firebasestorage.googleapis.com/v0/b/mediashare-7dd4d.appspot.com/o/Videos%2Fc2dd5f58-f3f5-4a14-88c2-492b247f8bd3.mp4?alt=media&token=5675e9f3-bef0-4c6a-bf04-d0d29faaa44a"
         />
       </Center>
 

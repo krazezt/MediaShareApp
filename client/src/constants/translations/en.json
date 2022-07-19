@@ -36,7 +36,7 @@
     "roomType": "Room Type",
     "luxury": "Luxury",
     "message": "Enter your message",
-    "album": "Album",
+    "posts": "Posts",
     "or": "or",
     "name": "Name",
     "namePlaceholder": "Enter your full name",
@@ -72,10 +72,10 @@
     "home": "Home",
     "components": "Components",
     "articles": "Articles",
-    "rental": "Rental",
+    "test": "Test",
     "profile": "Profile",
     "settings": "Settings",
-    "register": "Register",
+    "register": "Login",
     "extra": "Extra - Automotive"
   },
   "navigation": {
@@ -103,7 +103,7 @@
   },
   "home": {
     "title": "Soft UI",
-    "following": "Following",
+    "explore": "Explore",
     "trending": "Trending"
   },
   "register": {

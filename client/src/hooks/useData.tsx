@@ -60,7 +60,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
           });
           return result;
         default:
-          break;
+          return undefined;
       }
     } catch (err: any) {
       const error = err as AxiosError;
@@ -72,7 +72,11 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
             'Your session is expired, please login again!',
             [{ text: 'OK', onPress: () => {} }],
           );
-        }
+        } else Alert.alert(
+          'Something happened!',
+          'Some unhandled error has been occured, I\'m really sorry about that!',
+          [{ text: 'OK' }],
+        );
       }
     }
   };

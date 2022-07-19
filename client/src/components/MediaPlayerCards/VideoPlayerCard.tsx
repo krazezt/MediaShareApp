@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Box,
   Heading,
@@ -12,8 +12,10 @@ import {
   Center,
   Button,
 } from 'native-base';
-import MusicPlayerButtonGroup from '../Buttons/MusicPlayerButtonGroup';
 import { AntDesign, Entypo } from '@expo/vector-icons';
+import ImageViewerButtonGroup from '../Buttons/ImageViewerButtonGroup';
+import { Video } from 'expo-av';
+import VideoPlayerButtonGroup from '../Buttons/VideoPlayerButtonGroup';
 
 enum VoteState {
   NONE,
@@ -96,17 +98,26 @@ const getVoteButton = (
   }
 };
 
-export default function MusicPlayerCard(props: {
+export default function VideoPlayerCard(props: {
   avatarUri: string;
   contentId: number;
-  audioUri: string;
+  videoUri: string;
   categories: { name: string }[];
 }) {
   const [voteState, setVoteState] = useState<VoteState>(VoteState.NONE);
+  const [videoRef, setVideoRef] = useState<Video | null>(null);
 
   const changeLikeState = () => {
     setVoteState(getNextVoteState(voteState));
   };
+
+  useEffect(() => {
+    videoRef?.loadAsync(
+      { uri: props.videoUri },
+      { isMuted: true, isLooping: true },
+      true,
+    );
+  }, [videoRef]);
 
   const categories: string[] = props.categories.map((item) => item.name);
   return (
@@ -126,11 +137,17 @@ export default function MusicPlayerCard(props: {
         }}>
         <Box height="220px">
           <AspectRatio w="100%" ratio={16 / 9}>
-            <NBImage
-              source={{
-                uri: 'https://firebasestorage.googleapis.com/v0/b/test-native-e5a43.appspot.com/o/Assets%2Fmusic.png?alt=media&token=d0bd8303-7a2b-4a44-aa34-ce95a4f8c46a',
+            <Video
+              ref={(ref) => {
+                setVideoRef(ref);
               }}
-              alt="image"
+              onLoad={() => console.log('Load')}
+              status={{ shouldPlay: true }}
+              resizeMode="contain"
+              style={{ width: '100%', height: '100%' }}
+              onFullscreenUpdate={(e) => {
+                if (e.fullscreenUpdate === 2) videoRef?.setIsMutedAsync(true);
+              }}
             />
           </AspectRatio>
           {getVoteButton(voteState, changeLikeState)}
@@ -150,13 +167,14 @@ export default function MusicPlayerCard(props: {
           <Box
             position="relative"
             bottom="24"
-            left="3/6"
+            left="32"
             width="40"
             pt={2}
             pb={2}>
-            <MusicPlayerButtonGroup
+            <VideoPlayerButtonGroup
               contentId={props.contentId}
-              audioUri={props.audioUri}
+              videoUri={props.videoUri}
+              videoRef={videoRef}
             />
           </Box>
         </Box>
@@ -167,8 +185,7 @@ export default function MusicPlayerCard(props: {
             </Heading>
           </Stack>
           <NBText fontWeight="900" ml="-1" mt="-1">
-            Here is the description for this music track, no rule, just anything
-            about this track...
+            Here is the caption for this image, no rule, anything can be here...
           </NBText>
           <Stack direction="row">
             <ScrollView

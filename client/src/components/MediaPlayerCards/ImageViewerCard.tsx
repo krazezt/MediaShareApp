@@ -12,8 +12,8 @@ import {
   Center,
   Button,
 } from 'native-base';
-import MusicPlayerButtonGroup from '../Buttons/MusicPlayerButtonGroup';
 import { AntDesign, Entypo } from '@expo/vector-icons';
+import ImageViewerButtonGroup from '../Buttons/ImageViewerButtonGroup';
 
 enum VoteState {
   NONE,
@@ -96,10 +96,10 @@ const getVoteButton = (
   }
 };
 
-export default function MusicPlayerCard(props: {
+export default function ImageViewerCard(props: {
   avatarUri: string;
   contentId: number;
-  audioUri: string;
+  imageUri: string;
   categories: { name: string }[];
 }) {
   const [voteState, setVoteState] = useState<VoteState>(VoteState.NONE);
@@ -128,7 +128,7 @@ export default function MusicPlayerCard(props: {
           <AspectRatio w="100%" ratio={16 / 9}>
             <NBImage
               source={{
-                uri: 'https://firebasestorage.googleapis.com/v0/b/test-native-e5a43.appspot.com/o/Assets%2Fmusic.png?alt=media&token=d0bd8303-7a2b-4a44-aa34-ce95a4f8c46a',
+                uri: props.imageUri,
               }}
               alt="image"
             />
@@ -154,9 +154,9 @@ export default function MusicPlayerCard(props: {
             width="40"
             pt={2}
             pb={2}>
-            <MusicPlayerButtonGroup
+            <ImageViewerButtonGroup
               contentId={props.contentId}
-              audioUri={props.audioUri}
+              imageUri={props.imageUri}
             />
           </Box>
         </Box>
@@ -167,8 +167,7 @@ export default function MusicPlayerCard(props: {
             </Heading>
           </Stack>
           <NBText fontWeight="900" ml="-1" mt="-1">
-            Here is the description for this music track, no rule, just anything
-            about this track...
+            Here is the caption for this image, no rule, anything can be here...
           </NBText>
           <Stack direction="row">
             <ScrollView
