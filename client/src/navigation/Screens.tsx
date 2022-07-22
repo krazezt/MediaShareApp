@@ -17,32 +17,32 @@ export default () => {
 
   const routes: StackNavigation[] = [
     {
-      name: 'Home',
+      name: t('screens.home'),
       component: Home,
       options: { title: t('navigation.home') },
     },
     {
-      name: 'Components',
+      name: t('screens.components'),
       component: Components,
       options: screenOptions.components,
     },
     {
-      name: 'Articles',
+      name: t('screens.articles'),
       component: Articles,
       options: { title: t('navigation.articles') },
     },
     {
-      name: 'Pro',
+      name: t('screens.test'),
       component: Pro,
       options: screenOptions.pro,
     },
     {
-      name: 'Profile',
+      name: t('screens.profile'),
       component: Profile,
       options: { headerShown: false },
     },
     {
-      name: 'Register',
+      name: t('screens.register'),
       component: Register,
       options: { headerShown: false },
     },

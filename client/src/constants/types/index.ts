@@ -1,3 +1,4 @@
+import { AxiosResponse } from 'axios';
 import i18n from 'i18n-js';
 import { ImageSourcePropType } from 'react-native';
 import { APIRoutes } from '../APIs';
@@ -93,7 +94,10 @@ export interface IUseData {
     APIRoute: keyof APIRoutes,
     method: 'GET' | 'POST',
     body?: any,
-  ) => Promise<any>;
+  ) => Promise<AxiosResponse | undefined>;
+  playSound: (contentId: number, audioUri: string) => Promise<boolean>;
+  stopSound: () => Promise<boolean>;
+  playingMusicId: number;
 }
 
 export interface ITranslate {

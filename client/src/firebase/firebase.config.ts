@@ -1,9 +1,9 @@
 export const firebaseConfig = {
-  apiKey: 'AIzaSyAiTWcFkZUgcrQL41TEbaSH75JGvKeVUzs',
-  authDomain: 'test-native-e5a43.firebaseapp.com',
-  projectId: 'test-native-e5a43',
-  storageBucket: 'test-native-e5a43.appspot.com',
-  messagingSenderId: '954473077429',
-  appId: '1:954473077429:web:c66ee51b5c502f50a1fcfc',
-  measurementId: 'G-NPC22DC8Z8',
+  apiKey: "AIzaSyBSJv6kipGw8ybry2EUwtchZPLa7mAz4_c",
+  authDomain: "mediashare-7dd4d.firebaseapp.com",
+  projectId: "mediashare-7dd4d",
+  storageBucket: "mediashare-7dd4d.appspot.com",
+  messagingSenderId: "351572818915",
+  appId: "1:351572818915:web:0b6499231e6a97371a7ed6",
+  measurementId: "G-PP57QWMQMJ"
 };

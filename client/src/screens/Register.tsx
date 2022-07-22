@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Linking, Platform } from 'react-native';
+import { Alert, Linking, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 
 import { useAccessToken, useData, useTheme, useTranslation } from '../hooks/';
@@ -24,7 +24,7 @@ interface IRegistrationValidation {
 }
 
 const Register = () => {
-  const { isDark, callAPI } = useData();
+  const { isDark, callAPI, setAccessToken } = useData();
   const { t } = useTranslation();
   const navigation = useNavigation();
   const [isValid, setIsValid] = useState<IRegistrationValidation>({
@@ -38,7 +38,6 @@ const Register = () => {
     agreed: false,
   });
   const { assets, colors, gradients, sizes } = useTheme();
-  const { accessToken, setAccessToken } = useData();
 
   const handleChange = useCallback(
     (value) => {
@@ -61,16 +60,20 @@ const Register = () => {
     if (!Object.values(isValid).includes(false)) {
       /** send/save registratin data */
       try {
-        const result = await axios.post(
-          BackendConnectionConfig.baseURL + '/auth/signup',
-          {
-            email: registration.email,
-            password: registration.password,
-          },
-        );
+        const result = await callAPI('SIGNUP', 'POST', {
+          email: registration.email,
+          password: registration.password,
+        });
 
-        await setAccessToken(result.data.token);
-        navigation.navigate(t('screens.home'));
+        if (result !== undefined) {
+          await setAccessToken(result?.data.token);
+          navigation.navigate(t('screens.home'));
+        } else
+          Alert.alert(
+            'Error!',
+            'This email is taken by another account, try again!',
+            [{ text: 'OK' }],
+          );
       } catch (error: any) {
         console.log(error.response.data.message);
       }
@@ -79,16 +82,18 @@ const Register = () => {
 
   const handleLogin = useCallback(async () => {
     try {
-      const result = await axios.post(
-        BackendConnectionConfig.baseURL + '/auth/login',
-        {
-          email: registration.email,
-          password: registration.password,
-        },
-      );
+      const result = await callAPI('LOGIN', 'POST', {
+        email: registration.email,
+        password: registration.password,
+      });
 
-      await setAccessToken(result.data.token);
-      navigation.navigate(t('screens.profile'));
+      if (result !== undefined) {
+        await setAccessToken(result?.data.token);
+        navigation.navigate(t('screens.profile'));
+      } else
+        Alert.alert('Login failed!', 'Incorrect email or password!', [
+          { text: 'OK' },
+        ]);
     } catch (error: any) {
       console.log(error.response.data.message);
     }

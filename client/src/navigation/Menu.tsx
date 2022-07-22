@@ -99,57 +99,43 @@ const DrawerContent = (
   const screens: ScreenNavigator[] = [
     {
       name: t('screens.home'),
-      to: 'Home',
+      to: t('screens.home'),
       icon: assets.home,
       loggedInShow: true,
       loggedOutShow: true,
     },
     {
       name: t('screens.components'),
-      to: 'Components',
+      to: t('screens.components'),
       icon: assets.components,
       loggedInShow: true,
       loggedOutShow: true,
     },
     {
       name: t('screens.articles'),
-      to: 'Articles',
+      to: t('screens.articles'),
       icon: assets.document,
       loggedInShow: true,
       loggedOutShow: true,
     },
     {
       name: t('screens.profile'),
-      to: 'Profile',
+      to: t('screens.profile'),
       icon: assets.profile,
       loggedInShow: true,
       loggedOutShow: false,
     },
     {
       name: t('screens.register'),
-      to: 'Register',
+      to: t('screens.register'),
       icon: assets.register,
       loggedInShow: false,
       loggedOutShow: true,
     },
     {
-      name: t('screens.settings'),
-      to: 'Home',
-      icon: assets.settings,
-      loggedInShow: true,
-      loggedOutShow: true,
-    },
-    {
-      name: t('screens.rental'),
-      to: 'Pro',
+      name: t('screens.test'),
+      to: t('screens.test'),
       icon: assets.rental,
-      loggedInShow: true,
-      loggedOutShow: true,
-    },
-    {
-      name: t('screens.extra'),
-      to: 'Home',
-      icon: assets.extras,
       loggedInShow: true,
       loggedOutShow: true,
     },
@@ -267,8 +253,7 @@ const DrawerContent = (
           <Switch
             checked={isDark}
             onPress={async (checked) => {
-              await setAccessToken('');
-              handleIsDark(checked);
+              // handleIsDark(checked);
             }}
           />
         </Block>
