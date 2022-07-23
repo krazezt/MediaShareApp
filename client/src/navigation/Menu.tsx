@@ -6,6 +6,8 @@ import {
   StyleSheet,
 } from 'react-native';
 
+import { Button as NBButton } from 'native-base';
+
 import {
   useIsDrawerOpen,
   createDrawerNavigator,
@@ -15,7 +17,7 @@ import {
 } from '@react-navigation/drawer';
 
 import Screens from './Screens';
-import { Block, Text, Switch, Button, Image } from '../components';
+import { Block, Text, Button, Image } from '../components';
 import { useData, useTheme, useTranslation } from '../hooks';
 
 const Drawer = createDrawerNavigator();
@@ -79,7 +81,7 @@ const DrawerContent = (
 ) => {
   const { navigation } = props;
   const { t } = useTranslation();
-  const { isDark, handleIsDark } = useData();
+  const { handleIsDark } = useData();
   const [active, setActive] = useState('Home');
   const { assets, colors, gradients, sizes } = useTheme();
   const { accessToken, setAccessToken } = useData();
@@ -249,13 +251,13 @@ const DrawerContent = (
         </Button>
 
         <Block row justify="space-between" marginTop={sizes.sm}>
-          <Text color={labelColor}>{t('darkMode')}</Text>
-          <Switch
-            checked={isDark}
-            onPress={async (checked) => {
-              // handleIsDark(checked);
-            }}
-          />
+          <NBButton
+            colorScheme="green"
+            onPress={async () => {
+              await handleIsDark(false);
+            }}>
+            <Text color={labelColor}>Reset NavBar</Text>
+          </NBButton>
         </Block>
       </Block>
     </DrawerContentScrollView>
