@@ -101,6 +101,8 @@ export default function ImageViewerCard(props: {
   contentId: number;
   imageUri: string;
   categories: { name: string }[];
+  description: string;
+  author: string;
 }) {
   const [voteState, setVoteState] = useState<VoteState>(VoteState.NONE);
 
@@ -163,11 +165,11 @@ export default function ImageViewerCard(props: {
         <Stack p="4" space={3} mt="-1">
           <Stack space={1}>
             <Heading size="md" ml="-1">
-              Author name here
+              {props.author}
             </Heading>
           </Stack>
           <NBText fontWeight="900" ml="-1" mt="-1">
-            Here is the caption for this image, no rule, anything can be here...
+            {props.description}
           </NBText>
           <Stack direction="row">
             <ScrollView
