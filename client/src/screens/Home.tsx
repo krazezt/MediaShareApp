@@ -140,6 +140,8 @@ const Home = () => {
                       imageUri={item.mediaURL}
                       key={index}
                       categories={item.content.categories}
+                      author={item.content.author.name}
+                      description={item.caption}
                     />
                   );
                 case EContentType.MUSIC:
@@ -150,6 +152,8 @@ const Home = () => {
                       audioUri={item.mediaURL}
                       key={index}
                       categories={item.content.categories}
+                      author={item.content.author.name}
+                      description={item.caption}
                     />
                   );
                 case EContentType.VIDEO:
@@ -160,6 +164,8 @@ const Home = () => {
                       videoUri={item.mediaURL}
                       key={index}
                       categories={item.content.categories}
+                      author={item.content.author.name}
+                      description={item.caption}
                     />
                   );
 
