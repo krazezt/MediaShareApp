@@ -81,11 +81,14 @@ const DrawerContent = (
 ) => {
   const { navigation } = props;
   const { t } = useTranslation();
-  const { handleIsDark } = useData();
   const [active, setActive] = useState('Home');
   const { assets, colors, gradients, sizes } = useTheme();
-  const { accessToken, setAccessToken } = useData();
+  const { accessToken } = useData();
   const labelColor = colors.text;
+
+  const [reload, setReload] = useState(false);
+
+  console.log("Reload");
 
   const handleNavigation = useCallback(
     (to) => {
@@ -253,8 +256,8 @@ const DrawerContent = (
         <Block row justify="space-between" marginTop={sizes.sm}>
           <NBButton
             colorScheme="green"
-            onPress={async () => {
-              await handleIsDark(false);
+            onPress={() => {
+              setReload(!reload);
             }}>
             <Text color={labelColor}>Reset NavBar</Text>
           </NBButton>
