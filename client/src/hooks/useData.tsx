@@ -74,7 +74,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
           );
         } else Alert.alert(
           'Something happened!',
-          'Some unhandled error has been occured, I\'m really sorry about that!',
+          error.message,
           [{ text: 'OK' }],
         );
       }

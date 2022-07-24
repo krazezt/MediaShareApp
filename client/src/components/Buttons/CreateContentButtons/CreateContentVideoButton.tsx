@@ -60,12 +60,13 @@ export default function CreateContentMusicButton() {
       caption: caption,
       mediaURL: imageURL,
       shareState: ShareState.PUBLIC,
-      categories: ['Game', 'Meme', 'Fun'],
+      categories: [],
     };
 
     try {
-      const res = { status: 201 }; //await callAPI('CREATE_CONTENT_IMAGE', 'POST', data);
-      if (res.status === 201) {
+      //const res = await callAPI('CREATE_CONTENT_VIDEO', 'POST', data);
+      const res = { status: 201 };
+      if (res?.status === 201) {
         setModalVisible(false);
         toast.show({
           render: () => {

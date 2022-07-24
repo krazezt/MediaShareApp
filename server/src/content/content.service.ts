@@ -9,6 +9,7 @@ export class ContentService {
   constructor(private prisma: PrismaService) {}
 
   async uploadImage(authorId: number, dto: UploadImageDTO) {
+    console.log({authorId, dto});
     try {
       const res = await this.prisma.post.create({
         data: {
@@ -33,6 +34,7 @@ export class ContentService {
       return res;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
+        console.log(error.message);
         throw new ForbiddenException(error.message);
       }
     }

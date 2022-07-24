@@ -60,12 +60,12 @@ export default function CreateContentImageButton() {
       caption: caption,
       mediaURL: imageURL,
       shareState: ShareState.PUBLIC,
-      categories: ['Game', 'Meme', 'Fun'],
+      categories: [],
     };
 
     try {
       const res = await callAPI('CREATE_CONTENT_IMAGE', 'POST', data);
-      if (res.status === 201) {
+      if (res?.status === 201) {
         setModalVisible(false);
         toast.show({
           render: () => {
