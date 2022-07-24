@@ -21,7 +21,7 @@ import uploadImage from '../../../functions/UploadImage';
 import { FirebaseFolders } from '../../../constants/config/FirebaseFolders';
 import getFileName from '../../../functions/GetFileNameFromURI';
 import { ICreateContentImageRequest } from '../../../constants/request-types';
-import { ShareState } from '../../../constants/types';
+import { IPost, ShareState } from '../../../constants/types';
 import { AxiosError, AxiosResponse } from 'axios';
 import { Alert } from 'react-native';
 
@@ -30,7 +30,7 @@ export default function CreateContentImageButton() {
   const [loading, setLoading] = useState(false);
   const finalRef = React.useRef(null);
   const { t } = useTranslation();
-  const { callAPI } = useData();
+  const { callAPI, explore, setExplore } = useData();
   const toast = useToast();
 
   const [caption, setCaption] = useState<string>('');
@@ -98,6 +98,9 @@ export default function CreateContentImageButton() {
             );
           },
         });
+
+        explore.push(res.data as IPost);
+        setExplore([...explore]);
       }
     } catch (error) {
       if (error instanceof AxiosError)

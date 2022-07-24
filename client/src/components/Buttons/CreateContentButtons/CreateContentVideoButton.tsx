@@ -19,7 +19,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { FirebaseFolders } from '../../../constants/config/FirebaseFolders';
 import getFileName from '../../../functions/GetFileNameFromURI';
 import { ICreateContentImageRequest } from '../../../constants/request-types';
-import { ShareState } from '../../../constants/types';
+import { IPost, ShareState } from '../../../constants/types';
 import { AxiosError } from 'axios';
 import { Alert } from 'react-native';
 import uploadVideo from '../../../functions/UploadVideo';
@@ -30,7 +30,7 @@ export default function CreateContentMusicButton() {
   const [loading, setLoading] = useState(false);
   const finalRef = React.useRef(null);
   const { t } = useTranslation();
-  const { callAPI } = useData();
+  const { callAPI, setExplore, explore } = useData();
   const toast = useToast();
 
   const [caption, setCaption] = useState<string>('');
@@ -64,8 +64,7 @@ export default function CreateContentMusicButton() {
     };
 
     try {
-      //const res = await callAPI('CREATE_CONTENT_VIDEO', 'POST', data);
-      const res = { status: 201 };
+      const res = await callAPI('CREATE_CONTENT_VIDEO', 'POST', data);
       if (res?.status === 201) {
         setModalVisible(false);
         toast.show({
@@ -99,6 +98,9 @@ export default function CreateContentMusicButton() {
             );
           },
         });
+
+        explore.push(res.data as IPost);
+        setExplore([...explore]);
       }
     } catch (error) {
       if (error instanceof AxiosError)

@@ -110,7 +110,8 @@ export default function MusicPlayerCard(props: {
     setVoteState(getNextVoteState(voteState));
   };
 
-  const categories: string[] = props.categories.map((item) => item.name);
+  //const categories: string[] = props.categories.map((item) => item.name);
+  const categories = ["Category 1", "Category 2", "Category 3"];
   return (
     <Box alignItems="center">
       <Box

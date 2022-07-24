@@ -121,7 +121,9 @@ export default function VideoPlayerCard(props: {
     );
   }, [videoRef]);
 
-  const categories: string[] = props.categories.map((item) => item.name);
+  //const categories: string[] = props.categories.map((item) => item.name);
+  const categories = ["Category 1", "Category 2", "Category 3"];
+
   return (
     <Box alignItems="center">
       <Box

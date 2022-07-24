@@ -9,7 +9,6 @@ export class ContentService {
   constructor(private prisma: PrismaService) {}
 
   async uploadImage(authorId: number, dto: UploadImageDTO) {
-    console.log({authorId, dto});
     try {
       const res = await this.prisma.post.create({
         data: {
@@ -30,7 +29,21 @@ export class ContentService {
             },
           },
         },
+        include: {
+          content: {
+            select: {
+              categories: true,
+              author: {
+                select: {
+                  name: true,
+                  avatarURL: true,
+                },
+              },
+            },
+          },
+        },
       });
+
       return res;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
@@ -61,7 +74,21 @@ export class ContentService {
             },
           },
         },
+        include: {
+          content: {
+            select: {
+              categories: true,
+              author: {
+                select: {
+                  name: true,
+                  avatarURL: true,
+                },
+              },
+            },
+          },
+        },
       });
+
       return res;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
@@ -91,7 +118,21 @@ export class ContentService {
             },
           },
         },
+        include: {
+          content: {
+            select: {
+              categories: true,
+              author: {
+                select: {
+                  name: true,
+                  avatarURL: true,
+                },
+              },
+            },
+          },
+        },
       });
+
       return res;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
