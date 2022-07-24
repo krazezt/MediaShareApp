@@ -14,36 +14,20 @@ enum ETabs {
   TRENDING,
 }
 
-interface IPost {
-  id: number;
-  caption: string;
-  type: EContentType;
-  mediaURL: string;
-  createdAt: string;
-  content: {
-    categories: { name: string }[];
-    author: {
-      avatarURL: string;
-      name: string;
-    };
-  };
-}
-
 const Home = () => {
   const { t } = useTranslation();
-  const { callAPI } = useData();
+  const { callAPI, explore, setExplore } = useData();
   const [tab, setTab] = useState<ETabs>(ETabs.EXPLORE);
-  const [posts, setPosts] = useState<IPost[]>([]);
   const { assets, colors, fonts, gradients, sizes } = useTheme();
 
   useEffect(() => {
     const getData = async () => {
       const res = await callAPI('GET_DASHBOARD_CONTENT', 'GET');
-      if (res !== undefined) setPosts(res.data);
+      if (res !== undefined) setExplore(res.data);
     };
 
     getData();
-  }, [tab]);
+  }, []);
 
   const handleChangeTabs = (toTab: ETabs) => {
     setTab(toTab);
@@ -130,7 +114,7 @@ const Home = () => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 10 }}>
           <Stack space={5}>
-            {posts.map((item, index) => {
+            {explore.map((item, index) => {
               switch (item.type) {
                 case EContentType.IMAGE:
                   return (

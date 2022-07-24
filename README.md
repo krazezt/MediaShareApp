@@ -4,6 +4,7 @@
 * Required environment & tools 
 * Technologies 
 * Set up Instruction 
+  * Global packages
   * Server
   * Client
 
@@ -13,16 +14,28 @@
   * **Yarn: v1.22.18**
   * **Docker: Latest version**
 
-## After cloning this project from **Github**, please follow these steps to run app.
+## Technologies:
+* Server: 
+  * **NestJS**
+  * **Prisma**
+  * **MySQL**
+  * **Docker**
+* Client:
+  * **React Native**
+  * **Expo**
+  * **NativeBase**
 
-### 1. Setup global environments:
+## Set up Instruction:
+### After cloning this project from **Github**, please follow these steps to run app.
+
+### 1. Setup global packages:
 ```
 $ npm install -g @nestjs/cli expo-cli nodemon
 ```
 
 ### 2. Setup for Server:
 
-#### Firstly go to the server directory:
+#### Firstly, go to the server directory:
 ```
 .../MediaShareApp $ cd server
 ```
@@ -34,7 +47,7 @@ $ npm install -g @nestjs/cli expo-cli nodemon
 ```
 .../server $ npm run db:dev:up
 ```
-#### Migrate database:
+#### Migrate Database:
 ```
 .../server $ npm run db:dev:migrate
 ```
@@ -46,7 +59,7 @@ $ npm install -g @nestjs/cli expo-cli nodemon
 
 ### 3. Setup for Client:
 
-#### Firstly go to the client directory:
+#### Firstly, go to the client directory:
 ```
 .../MediaShareApp $ cd client
 ```

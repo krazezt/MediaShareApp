@@ -19,7 +19,7 @@ import { useData, useTranslation } from '../../../hooks';
 import { FirebaseFolders } from '../../../constants/config/FirebaseFolders';
 import getFileName from '../../../functions/GetFileNameFromURI';
 import { ICreateContentImageRequest } from '../../../constants/request-types';
-import { ShareState } from '../../../constants/types';
+import { IPost, ShareState } from '../../../constants/types';
 import { AxiosError } from 'axios';
 import { Alert } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
@@ -30,7 +30,7 @@ export default function CreateContentMusicButton() {
   const [loading, setLoading] = useState(false);
   const finalRef = React.useRef(null);
   const { t } = useTranslation();
-  const { callAPI } = useData();
+  const { callAPI, explore, setExplore } = useData();
   const toast = useToast();
 
   const [caption, setCaption] = useState<string>('');
@@ -62,7 +62,7 @@ export default function CreateContentMusicButton() {
     };
 
     try {
-      const res = await callAPI("CREATE_CONTENT_MUSIC", 'POST', data);
+      const res = await callAPI('CREATE_CONTENT_MUSIC', 'POST', data);
       if (res?.status === 201) {
         setModalVisible(false);
         toast.show({
@@ -96,6 +96,9 @@ export default function CreateContentMusicButton() {
             );
           },
         });
+
+        explore.push(res.data as IPost);
+        setExplore([...explore]);
       }
     } catch (error) {
       if (error instanceof AxiosError)
@@ -126,7 +129,7 @@ export default function CreateContentMusicButton() {
                 {audio ? (
                   <Image
                     source={{
-                      uri: "https://firebasestorage.googleapis.com/v0/b/test-native-e5a43.appspot.com/o/Assets%2Fmusic.png?alt=media&token=d0bd8303-7a2b-4a44-aa34-ce95a4f8c46a",
+                      uri: 'https://firebasestorage.googleapis.com/v0/b/test-native-e5a43.appspot.com/o/Assets%2Fmusic.png?alt=media&token=d0bd8303-7a2b-4a44-aa34-ce95a4f8c46a',
                     }}
                     alt="Alternate Text"
                     w="100%"

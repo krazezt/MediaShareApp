@@ -2,6 +2,7 @@ import { AxiosResponse } from 'axios';
 import i18n from 'i18n-js';
 import { ImageSourcePropType } from 'react-native';
 import { APIRoutes } from '../APIs';
+import { EContentType } from './contentTypes';
 import { ITheme } from './theme';
 
 export * from './components';
@@ -58,6 +59,22 @@ export interface IProduct {
   linkLabel?: string;
   type: 'vertical' | 'horizontal';
 }
+
+export interface IPost {
+  id: number;
+  caption: string;
+  type: EContentType;
+  mediaURL: string;
+  createdAt: string;
+  content: {
+    categories: { name: string }[];
+    author: {
+      avatarURL: string;
+      name: string;
+    };
+  };
+}
+
 export interface ILocation {
   id?: number;
   city?: string;
@@ -74,8 +91,8 @@ export interface IUseData {
   handleUsers: (data?: IUser[]) => void;
   basket: IBasket;
   handleBasket: (data?: IBasket) => void;
-  following: IProduct[];
-  setFollowing: (data?: IProduct[]) => void;
+  explore: IPost[];
+  setExplore: (data?: IPost[]) => void;
   trending: IProduct[];
   setTrending: (data?: IProduct[]) => void;
   categories: ICategory[];
