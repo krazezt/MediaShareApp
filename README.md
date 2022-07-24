@@ -4,6 +4,7 @@
 * Required environment & app 
 * Technologies 
 * Set up Instruction 
+  * Global packages
   * Server
   * Client
 
@@ -13,9 +14,21 @@
   * **Yarn: v1.22.18**
   * **Docker: Latest version**
 
-## After cloning this project from **Github**, please follow these steps to run app.
+## Technologies:
+* Server: 
+  * **NestJS**
+  * **Prisma**
+  * **MySQL**
+  * **Docker**
+* Client:
+  * **React Native**
+  * **Expo**
+  * **NativeBase**
 
-### 1. Setup global environments:
+## Set up Instruction:
+### After cloning this project from **Github**, please follow these steps to run app.
+
+### 1. Setup global packages:
 ```
 $ npm install -g @nestjs/cli expo-cli nodemon
 ```
@@ -34,7 +47,7 @@ $ npm install -g @nestjs/cli expo-cli nodemon
 ```
 .../server $ npm run db:dev:up
 ```
-#### Migrate database:
+#### Migrate Database:
 ```
 .../server $ npm run db:dev:migrate
 ```
