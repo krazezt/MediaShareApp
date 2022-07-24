@@ -22,7 +22,7 @@ $ npm install -g @nestjs/cli expo-cli nodemon
 
 ### 2. Setup for Server:
 
-#### Firstly go to the server directory:
+#### Firstly, go to the server directory:
 ```
 .../MediaShareApp $ cd server
 ```
@@ -46,7 +46,7 @@ $ npm install -g @nestjs/cli expo-cli nodemon
 
 ### 3. Setup for Client:
 
-#### Firstly go to the client directory:
+#### Firstly, go to the client directory:
 ```
 .../MediaShareApp $ cd client
 ```
