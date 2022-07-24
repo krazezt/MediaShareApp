@@ -5,8 +5,9 @@ CREATE TABLE `User` (
     `hash` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `role` ENUM('USER', 'ADMIN') NOT NULL DEFAULT 'USER',
-    `avatarURL` VARCHAR(191) NOT NULL,
+    `avatarURL` VARCHAR(191) NULL,
 
+    UNIQUE INDEX `User_email_key`(`email`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -14,7 +15,6 @@ CREATE TABLE `User` (
 CREATE TABLE `Content` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `type` ENUM('POST', 'COLLECTION') NOT NULL DEFAULT 'POST',
-    `categoryName` VARCHAR(191) NOT NULL,
     `authorId` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `views` INTEGER NULL,
@@ -111,6 +111,15 @@ CREATE TABLE `_Follow` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `_CategoryToContent` (
+    `A` VARCHAR(191) NOT NULL,
+    `B` INTEGER NOT NULL,
+
+    UNIQUE INDEX `_CategoryToContent_AB_unique`(`A`, `B`),
+    INDEX `_CategoryToContent_B_index`(`B`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `_CloseCategories` (
     `A` VARCHAR(191) NOT NULL,
     `B` VARCHAR(191) NOT NULL,
@@ -130,9 +139,6 @@ CREATE TABLE `_PostInCollection` (
 
 -- AddForeignKey
 ALTER TABLE `Content` ADD CONSTRAINT `Content_authorId_fkey` FOREIGN KEY (`authorId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Content` ADD CONSTRAINT `Content_categoryName_fkey` FOREIGN KEY (`categoryName`) REFERENCES `Category`(`name`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Post` ADD CONSTRAINT `Post_id_fkey` FOREIGN KEY (`id`) REFERENCES `Content`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -175,6 +181,12 @@ ALTER TABLE `_Follow` ADD CONSTRAINT `_Follow_A_fkey` FOREIGN KEY (`A`) REFERENC
 
 -- AddForeignKey
 ALTER TABLE `_Follow` ADD CONSTRAINT `_Follow_B_fkey` FOREIGN KEY (`B`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_CategoryToContent` ADD CONSTRAINT `_CategoryToContent_A_fkey` FOREIGN KEY (`A`) REFERENCES `Category`(`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_CategoryToContent` ADD CONSTRAINT `_CategoryToContent_B_fkey` FOREIGN KEY (`B`) REFERENCES `Content`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `_CloseCategories` ADD CONSTRAINT `_CloseCategories_A_fkey` FOREIGN KEY (`A`) REFERENCES `Category`(`name`) ON DELETE CASCADE ON UPDATE CASCADE;

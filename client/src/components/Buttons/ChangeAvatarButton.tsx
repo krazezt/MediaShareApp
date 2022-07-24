@@ -12,10 +12,11 @@ import * as ImagePicker from 'expo-image-picker';
 import uploadImage from '../../functions/UploadImage';
 import { FirebaseFolders } from '../../constants/config/FirebaseFolders';
 import { useData, useTranslation } from '../../hooks';
+import { IUser } from '../../constants/types';
 
-export const ChangeAvatarButton = () => {
+export const ChangeAvatarButton = (props: { handleUser: (user: IUser) => void }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { callAPI, handleUser } = useData();
+  const { callAPI } = useData();
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
   const { t } = useTranslation();
@@ -43,7 +44,7 @@ export const ChangeAvatarButton = () => {
       const res = await callAPI('CHANGE_AVATAR', 'POST', {
         avatarURL: imageURL,
       });
-      handleUser({
+      props.handleUser({
         id: 1,
         name: res?.data.name,
         department: 'EMT ~!',

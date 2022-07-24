@@ -88,8 +88,6 @@ const DrawerContent = (
 
   const [reload, setReload] = useState(false);
 
-  console.log("Reload");
-
   const handleNavigation = useCallback(
     (to) => {
       setActive(to);

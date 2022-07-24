@@ -43,7 +43,7 @@ const Home = () => {
     };
 
     getData();
-  }, []);
+  }, [tab]);
 
   const handleChangeTabs = (toTab: ETabs) => {
     setTab(toTab);
@@ -126,7 +126,7 @@ const Home = () => {
         {/* products list */}
         <Block
           scroll
-          paddingHorizontal={0}
+          paddingHorizontal={10}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 10 }}>
           <Stack space={5}>

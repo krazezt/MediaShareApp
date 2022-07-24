@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Platform, Linking } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
@@ -6,11 +6,27 @@ import { useNavigation } from '@react-navigation/core';
 import { Block, Button, Image, Text } from '../components/';
 import { useData, useTheme, useTranslation } from '../hooks/';
 import { ChangeAvatarButton } from '../components/Buttons/ChangeAvatarButton';
+import { IUser } from '../constants/types';
 
 const isAndroid = Platform.OS === 'android';
 
 const Profile = () => {
-  const { user, handleUser, callAPI, setAccessToken } = useData();
+  const { callAPI, setAccessToken } = useData();
+
+  const defaultAvatar = "https://firebasestorage.googleapis.com/v0/b/mediashare-7dd4d.appspot.com/o/Avatars%2Fdefault.png?alt=media&token=7de5f2e3-c35d-4c71-b324-a9191653c8c3";
+  const [user, handleUser] = useState<IUser>({
+    id: 1,
+    name: '',
+    department: '',
+    stats: {
+      posts: 0,
+      followers: 0,
+      following: 0,
+    },
+    about: '',
+    avatar: defaultAvatar,
+    social: { twitter: 'https://twitter.com/krazezt' },
+  })
   const { t } = useTranslation();
   const navigation = useNavigation();
   const { assets, colors, sizes } = useTheme();
@@ -57,20 +73,6 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    const defaultAvatar = "https://firebasestorage.googleapis.com/v0/b/mediashare-7dd4d.appspot.com/o/Avatars%2Fdefault.png?alt=media&token=7de5f2e3-c35d-4c71-b324-a9191653c8c3";
-    handleUser({
-      id: 1,
-      name: '',
-      department: '',
-      stats: {
-        posts: 0,
-        followers: 0,
-        following: 0,
-      },
-      about: '',
-      avatar: defaultAvatar,
-      social: { twitter: 'https://twitter.com/krazezt' },
-    });
     getUserInfo();
   }, []);
 
@@ -107,7 +109,7 @@ const Profile = () => {
                   {t('common.goBack')}
                 </Text>
               </Button>
-              <ChangeAvatarButton />
+              <ChangeAvatarButton handleUser={handleUser}/>
             </Block>
             <Block flex={0} align="center">
               <Image
