@@ -1,7 +1,7 @@
 # MediaShareApp
 
 ## Table of contents
-* Required environment & app 
+* Required environment & tools 
 * Technologies 
 * Set up Instruction 
   * Server
