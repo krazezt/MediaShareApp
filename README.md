@@ -1,4 +1,5 @@
 # MediaShareApp
+## A mobile application for sharing multimedia content, you can upload, download, save to collections, see suggested content, search by image, virtual collections,...
 
 ## Table of contents
 * Required environment & tools 
