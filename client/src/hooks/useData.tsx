@@ -45,19 +45,24 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
   const callAPI = async (
     APIRoute: keyof APIRoutes,
     method: 'GET' | 'POST',
-    body?: any,
+    data?: any,
+    formData: boolean = false,
   ): Promise<AxiosResponse | undefined> => {
     let result: AxiosResponse;
+    const headers = {
+      Authorization: 'Bearer ' + accessToken,
+      'Content-Type': formData ? 'multipart/form-data' : 'application/json',
+    };
     try {
       switch (method) {
         case 'GET':
           result = await axios.get(API[APIRoute], {
-            headers: { Authorization: 'Bearer ' + accessToken },
+            headers,
           });
           return result;
         case 'POST':
-          result = await axios.post(API[APIRoute], body, {
-            headers: { Authorization: 'Bearer ' + accessToken },
+          result = await axios.post(API[APIRoute], data, {
+            headers,
           });
           return result;
         default:
@@ -73,11 +78,9 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
             'Your session is expired, please login again!',
             [{ text: 'OK', onPress: () => {} }],
           );
-        } else Alert.alert(
-          'Something happened!',
-          error.message,
-          [{ text: 'OK' }],
-        );
+        } else {
+          Alert.alert('Something happened!', error.message, [{ text: 'OK' }]);
+        }
       }
     }
   };
