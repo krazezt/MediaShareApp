@@ -1,7 +1,6 @@
-import { AxiosResponse } from 'axios';
 import i18n from 'i18n-js';
 import { ImageSourcePropType } from 'react-native';
-import { APIRoutes } from '../APIs';
+import { TCallAPIFunc } from '../../hooks/types';
 import { EContentType } from './contentTypes';
 import { ITheme } from './theme';
 
@@ -107,11 +106,7 @@ export interface IUseData {
   handleNotifications: (data?: INotification[]) => void;
   accessToken: string;
   setAccessToken: (newAccessToken: string) => Promise<boolean>;
-  callAPI: (
-    APIRoute: keyof APIRoutes,
-    method: 'GET' | 'POST',
-    body?: any,
-  ) => Promise<AxiosResponse | undefined>;
+  callAPI: TCallAPIFunc;
   playSound: (contentId: number, audioUri: string) => Promise<boolean>;
   stopSound: () => Promise<boolean>;
   playingMusicId: number;

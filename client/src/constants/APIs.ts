@@ -9,6 +9,7 @@ export interface APIRoutes {
   CREATE_CONTENT_VIDEO  : string,
   CREATE_CONTENT_MUSIC  : string,
   GET_DASHBOARD_CONTENT : string,
+  UPLOAD_FILE           : string,
   /*** API routes */
 }
 
@@ -18,6 +19,8 @@ export const API: APIRoutes = {
 
   ME                    : BackendConnectionConfig.baseURL + "/user/me",
   CHANGE_AVATAR         : BackendConnectionConfig.baseURL + "/user/change-avatar",
+
+  UPLOAD_FILE           : BackendConnectionConfig.baseURL + "/assets/upload",
 
   CREATE_CONTENT_IMAGE  : BackendConnectionConfig.baseURL + "/content/upload-image",
   CREATE_CONTENT_VIDEO  : BackendConnectionConfig.baseURL + "/content/upload-video",

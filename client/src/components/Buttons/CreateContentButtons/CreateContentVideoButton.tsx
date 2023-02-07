@@ -24,41 +24,44 @@ import { AxiosError } from 'axios';
 import { Alert } from 'react-native';
 import uploadVideo from '../../../functions/UploadVideo';
 import { Video } from 'expo-av';
+import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types';
 
 export default function CreateContentMusicButton() {
   const [modalVisible, setModalVisible] = React.useState(false);
   const [loading, setLoading] = useState(false);
   const finalRef = React.useRef(null);
   const { t } = useTranslation();
-  const { callAPI, setExplore, explore } = useData();
   const toast = useToast();
+  const { callAPI, explore, setExplore } = useData();
 
   const [caption, setCaption] = useState<string>('');
-  const [video, setVideo] = useState<string>('');
+  const [video, setVideo] = useState<ImageInfo | undefined>(undefined);
 
   // Functions
-  const pickImage = async () => {
-    let image = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+  const pickVideo = async () => {
+    let tmpVideo = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Videos,
       allowsEditing: true,
       quality: 1,
     });
 
-    if (!image.cancelled) {
-      setVideo(image.uri);
+    if (!tmpVideo.cancelled) {
+      setVideo(tmpVideo);
     }
   };
 
   const upload = async () => {
     setLoading(true);
-    const imageURL = await uploadVideo(
+    const videoURL = await uploadVideo(
       video,
       FirebaseFolders.VIDEO,
-      getFileName(video),
+      getFileName(video?.uri || ""),
+      callAPI,
     );
+
     const data: ICreateContentImageRequest = {
       caption: caption,
-      mediaURL: imageURL,
+      mediaURL: videoURL,
       shareState: ShareState.PUBLIC,
       categories: [],
     };
@@ -131,7 +134,7 @@ export default function CreateContentMusicButton() {
                 {video ? (
                   <Video
                     source={{
-                      uri: video,
+                      uri: video.uri,
                     }}
                     status={{ shouldPlay: true }}
                     resizeMode="contain"
@@ -144,9 +147,9 @@ export default function CreateContentMusicButton() {
                   shadow={2}
                   size="sm"
                   bg="purple.300"
-                  onPress={pickImage}
+                  onPress={pickVideo}
                   icon={
-                    video === '' ? (
+                    !video ? (
                       <Icon
                         color="blue.400"
                         as={<Entypo name="upload" />}
@@ -176,7 +179,7 @@ export default function CreateContentMusicButton() {
                 {t('common.cancel')}
               </Button>
               <Button
-                isDisabled={video === ''}
+                isDisabled={!video}
                 isLoading={loading}
                 onPress={upload}>
                 {t('common.upload')}

@@ -51,7 +51,8 @@ export class AuthService {
           email: dto.email,
           hash: hash,
           name: 'User Name',
-          avatarURL: 'https://firebasestorage.googleapis.com/v0/b/mediashare-7dd4d.appspot.com/o/Avatars%2Fdefault.png?alt=media&token=7de5f2e3-c35d-4c71-b324-a9191653c8c3',
+          avatarURL:
+            'https://firebasestorage.googleapis.com/v0/b/mediashare-7dd4d.appspot.com/o/Avatars%2Fdefault.png?alt=media&token=7de5f2e3-c35d-4c71-b324-a9191653c8c3',
         },
         select: {
           id: true,
@@ -80,7 +81,7 @@ export class AuthService {
 
     return {
       token: await this.jwt.signAsync(payload, {
-        expiresIn: '30min',
+        // expiresIn: '30min',
         secret: this.config.get('JWT_SECRET'),
       }),
     };

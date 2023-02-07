@@ -13,9 +13,9 @@ import {
   Button,
 } from 'native-base';
 import { AntDesign, Entypo } from '@expo/vector-icons';
-import ImageViewerButtonGroup from '../Buttons/ImageViewerButtonGroup';
 import { Video } from 'expo-av';
 import VideoPlayerButtonGroup from '../Buttons/VideoPlayerButtonGroup';
+import { getVideoURI } from '../../functions/GetAssetURI';
 
 enum VoteState {
   NONE,
@@ -115,14 +115,14 @@ export default function VideoPlayerCard(props: {
 
   useEffect(() => {
     videoRef?.loadAsync(
-      { uri: props.videoUri },
+      { uri: getVideoURI(props.videoUri) },
       { isMuted: true, isLooping: true },
       true,
     );
   }, [videoRef]);
 
   //const categories: string[] = props.categories.map((item) => item.name);
-  const categories = ["Category 1", "Category 2", "Category 3"];
+  const categories = ['Category 1', 'Category 2', 'Category 3'];
 
   return (
     <Box alignItems="center">
@@ -145,7 +145,7 @@ export default function VideoPlayerCard(props: {
               ref={(ref) => {
                 setVideoRef(ref);
               }}
-              onLoad={() => console.log('Load')}
+              onLoad={() => console.log('Load video')}
               status={{ shouldPlay: true }}
               resizeMode="contain"
               style={{ width: '100%', height: '100%' }}
@@ -177,7 +177,7 @@ export default function VideoPlayerCard(props: {
             pb={2}>
             <VideoPlayerButtonGroup
               contentId={props.contentId}
-              videoUri={props.videoUri}
+              videoUri={getVideoURI(props.videoUri)}
               videoRef={videoRef}
             />
           </Box>

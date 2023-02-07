@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { JwtGuard } from 'src/auth/guard';
-import { ChangeAvatarRequestDTO } from './dto';
+import { ChangeAvatarRequestDTO, GetProfileDTO } from './dto';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -25,7 +25,7 @@ export class UserController {
   @UseGuards(JwtGuard)
   @Get('/me')
   getMe(@Req() req: Request) {
-    return req.user;
+    return this.userService.getMe(req);
   }
 
   @UseGuards(JwtGuard)
@@ -33,5 +33,12 @@ export class UserController {
   @HttpCode(HttpStatus.OK)
   changeAvatar(@Req() req: Request, @Body() body: ChangeAvatarRequestDTO) {
     return this.userService.changeAvatar(req, body);
+  }
+
+  @UseGuards(JwtGuard)
+  @Get('/get-profile')
+  @HttpCode(HttpStatus.OK)
+  getProfile(@Req() req: Request, @Body() body: GetProfileDTO) {
+    return this.userService.getProfile(body);
   }
 }

@@ -7,6 +7,7 @@ import NewContentStagger from '../components/Staggers/NewContentStagger';
 import { Center } from 'native-base';
 import VideoPlayerCard from '../components/MediaPlayerCards/VideoPlayerCard';
 import ImageViewerCard from '../components/MediaPlayerCards/ImageViewerCard';
+import { BackendConnectionConfig } from '../constants/config';
 
 const Pro = () => {
   const { t } = useTranslation();
@@ -29,7 +30,7 @@ const Pro = () => {
       style={{ flex: 1 }}>
       <NewContentStagger />
       <Center flex={1} px="4">
-        <ImageViewerCard
+        <VideoPlayerCard
           contentId={1}
           avatarUri="https://haycafe.vn/wp-content/uploads/2021/11/Anh-avatar-dep-chat-lam-hinh-dai-dien-600x600.jpg"
           categories={[
@@ -37,9 +38,9 @@ const Pro = () => {
             { name: 'Category 2' },
             { name: 'Category 3' },
           ]}
-          imageUri="https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Crab_Nebula.jpg/2048px-Crab_Nebula.jpg"
-          author='ABC'
-          description='Description, Caption, ...'
+          videoUri={`${BackendConnectionConfig.baseURL}/assets/video/mountain-chicken.mp4`}
+          author="ABC"
+          description="Description, Caption, ..."
         />
       </Center>
 
