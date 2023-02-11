@@ -15,6 +15,7 @@ import {
   GetCollectionInfoDTO,
   GetContentCommentsDTO,
   JoinCollectionDTO,
+  UnVoteContentDTO,
   UpdateReportDTO,
   UploadImageDTO,
   UploadMusicDTO,
@@ -179,6 +180,27 @@ export class ContentService {
             },
           },
           type: dto.type,
+        },
+      });
+
+      return res;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        throw new ForbiddenException(error.message);
+      } else {
+        throw new BadRequestException();
+      }
+    }
+  }
+
+  async unvoteContent(reqUserId: number, dto: UnVoteContentDTO) {
+    try {
+      const res = await this.prisma.vote.delete({
+        where: {
+          userId_contentId: {
+            userId: reqUserId,
+            contentId: dto.contentId,
+          },
         },
       });
 
@@ -511,6 +533,18 @@ export class ContentService {
         where: {
           contentId: dto.contentId,
         },
+        select: {
+          id: true,
+          commentContent: true,
+          createdAt: true,
+          user: {
+            select: {
+              id: true,
+              name: true,
+              avatarURL: true,
+            },
+          },
+        },
       });
 
       return res;
@@ -525,7 +559,7 @@ export class ContentService {
     }
   }
 
-  async getDashboard() {
+  async getDashboard(reqUserId: number) {
     const res = await this.prisma.post.findMany({
       include: {
         content: {
@@ -537,6 +571,11 @@ export class ContentService {
                 name: true,
               },
             },
+            votes: {
+              where: {
+                userId: reqUserId,
+              }
+            }
           },
         },
       },

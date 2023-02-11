@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { useData, useTheme, useTranslation } from '../hooks/';
 import { Block, Button, Image, Input, Text } from '../components/';
 import NewContentStagger from '../components/Staggers/NewContentStagger';
-import { ScrollView, Stack } from 'native-base';
-import { EContentType } from '../constants/types';
+import { Box, Stack } from 'native-base';
+import { EContentType, VoteState } from '../constants/types';
 import ImageViewerCard from '../components/MediaPlayerCards/ImageViewerCard';
 import MusicPlayerCard from '../components/MediaPlayerCards/MusicPlayerCard';
 import VideoPlayerCard from '../components/MediaPlayerCards/VideoPlayerCard';
@@ -113,8 +113,14 @@ const Home = () => {
           paddingHorizontal={10}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 10 }}>
-          <Stack space={5}>
+          <Box height="2" />
+          <Stack space={4}>
             {explore.map((item, index) => {
+              const currVoteState: VoteState =
+                item.content.votes.length === 0
+                  ? VoteState.NONE
+                  : VoteState.LIKED;
+
               switch (item.type) {
                 case EContentType.IMAGE:
                   return (
@@ -126,6 +132,7 @@ const Home = () => {
                       categories={item.content.categories}
                       author={item.content.author.name}
                       description={item.caption}
+                      currentVoteState={currVoteState}
                     />
                   );
                 case EContentType.MUSIC:
@@ -138,6 +145,7 @@ const Home = () => {
                       categories={item.content.categories}
                       author={item.content.author.name}
                       description={item.caption}
+                      currentVoteState={currVoteState}
                     />
                   );
                 case EContentType.VIDEO:
@@ -150,6 +158,7 @@ const Home = () => {
                       categories={item.content.categories}
                       author={item.content.author.name}
                       description={item.caption}
+                      currentVoteState={currVoteState}
                     />
                   );
 

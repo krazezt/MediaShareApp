@@ -79,6 +79,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
             [{ text: 'OK', onPress: () => {} }],
           );
         } else {
+          console.log(error.response)
           Alert.alert('Something happened!', error.message, [{ text: 'OK' }]);
         }
       }

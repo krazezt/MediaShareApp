@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Stack, Center, Icon, Modal, Box } from 'native-base';
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import ImageViewer from 'react-native-image-zoom-viewer-fixed';
+import ContentSubMenuButton from './ContentActions/ContentSubMenuButton';
 
 const btnSize = 10;
 
@@ -49,7 +50,7 @@ export default function ImageViewerButtonGroup(props: {
       <Center width="100%" alignItems="center">
         <Stack direction="row" space={5}>
           <Center size={btnSize}>
-            <Icon as={Entypo} name="menu" size="7rem" color="violet.400" />
+            <ContentSubMenuButton contentId={props.contentId} size={12}/>
           </Center>
           <Center size={btnSize}>
             <Icon

@@ -18,6 +18,7 @@ import {
   GetCollectionInfoDTO,
   GetContentCommentsDTO,
   JoinCollectionDTO,
+  UnVoteContentDTO,
   UpdateReportDTO,
   UploadImageDTO,
   UploadMusicDTO,
@@ -66,6 +67,17 @@ export class ContentController {
   @Post('vote-content')
   async voteContent(@Req() req: Request, @Body() body: VoteContentDTO) {
     const res = await this.contentService.voteContent(
+      (req.user as User).id,
+      body,
+    );
+    return res;
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtGuard)
+  @Post('unvote-content')
+  async unvoteContent(@Req() req: Request, @Body() body: UnVoteContentDTO) {
+    const res = await this.contentService.unvoteContent(
       (req.user as User).id,
       body,
     );
@@ -155,7 +167,7 @@ export class ContentController {
 
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtGuard)
-  @Get('get-content-comments')
+  @Post('get-content-comments')
   async getContentComments(
     @Req() req: Request,
     @Body() body: GetContentCommentsDTO,
@@ -164,8 +176,10 @@ export class ContentController {
     return res;
   }
 
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtGuard)
   @Get('dashboard')
-  async getDashboard() {
-    return await this.contentService.getDashboard();
+  async getDashboard(@Req() req: Request) {
+    return await this.contentService.getDashboard((req.user as User).id);
   }
 }

@@ -10,4 +10,10 @@ class VoteContentDTO {
   type: VoteType;
 }
 
-export { VoteContentDTO };
+class UnVoteContentDTO {
+  @IsNumber()
+  @IsNotEmpty()
+  contentId: number;
+}
+
+export { VoteContentDTO, UnVoteContentDTO };
