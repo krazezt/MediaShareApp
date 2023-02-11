@@ -27,14 +27,14 @@ import { Alert } from 'react-native';
 
 export default function CreateContentImageButton() {
   const [modalVisible, setModalVisible] = React.useState(false);
-  const [loading, setLoading] = useState(false);
   const finalRef = React.useRef(null);
-  const { t } = useTranslation();
   const { callAPI, explore, setExplore } = useData();
+  const { t } = useTranslation();
   const toast = useToast();
 
   const [caption, setCaption] = useState<string>('');
   const [image, setImage] = useState<string>('');
+  const [loading, setLoading] = useState(false);
 
   // Functions
   const pickImage = async () => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Heading,
@@ -16,87 +16,9 @@ import { AntDesign, Entypo } from '@expo/vector-icons';
 import { Video } from 'expo-av';
 import VideoPlayerButtonGroup from '../Buttons/VideoPlayerButtonGroup';
 import { getVideoURI } from '../../functions/GetAssetURI';
-
-enum VoteState {
-  NONE,
-  LIKED,
-  DISLIKED,
-}
-
-const getNextVoteState = (currentVoteState: VoteState) => {
-  switch (currentVoteState) {
-    case VoteState.NONE:
-      return VoteState.LIKED;
-    case VoteState.LIKED:
-      return VoteState.DISLIKED;
-    case VoteState.DISLIKED:
-      return VoteState.NONE;
-  }
-};
-
-const getVoteButton = (
-  currentVoteState: VoteState,
-  onPressFunction: () => any,
-) => {
-  switch (currentVoteState) {
-    case VoteState.NONE:
-      return (
-        <Icon
-          position="absolute"
-          top="10px"
-          right="10px"
-          as={AntDesign}
-          name="like2"
-          size="6rem"
-          color="teal.400"
-          style={[
-            {
-              transform: [{ rotateY: '180deg' }],
-            },
-          ]}
-          onPress={onPressFunction}
-        />
-      );
-    case VoteState.LIKED:
-      return (
-        <Icon
-          position="absolute"
-          top="10px"
-          right="10px"
-          as={AntDesign}
-          name="like1"
-          size="6rem"
-          color="teal.400"
-          style={[
-            {
-              transform: [{ rotateY: '180deg' }],
-            },
-          ]}
-          onPress={onPressFunction}
-        />
-      );
-    case VoteState.DISLIKED:
-      return (
-        <Icon
-          position="absolute"
-          top="10px"
-          right="10px"
-          as={AntDesign}
-          name="like1"
-          size="6rem"
-          color="teal.400"
-          style={[
-            {
-              transform: [{ rotateY: '180deg' }, { rotateX: '180deg' }],
-            },
-          ]}
-          onPress={onPressFunction}
-        />
-      );
-    default:
-      return null;
-  }
-};
+import { VoteState } from '../../constants/types';
+import ContentActionButtonGroup from '../Buttons/ContentActionButtonGroup';
+import ReportContentButton from '../Buttons/ContentActions/ReportContentButton';
 
 export default function VideoPlayerCard(props: {
   avatarUri: string;
@@ -105,13 +27,9 @@ export default function VideoPlayerCard(props: {
   categories: { name: string }[];
   description: string;
   author: string;
+  currentVoteState: VoteState;
 }) {
-  const [voteState, setVoteState] = useState<VoteState>(VoteState.NONE);
   const [videoRef, setVideoRef] = useState<Video | null>(null);
-
-  const changeLikeState = () => {
-    setVoteState(getNextVoteState(voteState));
-  };
 
   useEffect(() => {
     videoRef?.loadAsync(
@@ -140,12 +58,21 @@ export default function VideoPlayerCard(props: {
           backgroundColor: 'gray.50',
         }}>
         <Box height="220px">
+          {/* <Box
+            position="absolute"
+            top="2"
+            right="2"
+            bgColor="warmGray.300"
+            borderRadius="full"
+            zIndex={1}
+            padding={1}>
+            <ReportContentButton contentId={props.contentId} />
+          </Box> */}
           <AspectRatio w="100%" ratio={16 / 9}>
             <Video
               ref={(ref) => {
                 setVideoRef(ref);
               }}
-              onLoad={() => console.log('Load video')}
               status={{ shouldPlay: true }}
               resizeMode="contain"
               style={{ width: '100%', height: '100%' }}
@@ -154,7 +81,6 @@ export default function VideoPlayerCard(props: {
               }}
             />
           </AspectRatio>
-          {getVoteButton(voteState, changeLikeState)}
           <Avatar
             position="relative"
             size="xl"
@@ -171,7 +97,7 @@ export default function VideoPlayerCard(props: {
           <Box
             position="relative"
             bottom="24"
-            left="32"
+            left="3/6"
             width="40"
             pt={2}
             pb={2}>
@@ -230,6 +156,10 @@ export default function VideoPlayerCard(props: {
                 }></Button>
             </Center>
           </Stack>
+          <ContentActionButtonGroup
+            contentId={props.contentId}
+            currentVoteState={props.currentVoteState}
+          />
         </Stack>
       </Box>
     </Box>

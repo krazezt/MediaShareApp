@@ -8,6 +8,8 @@ export * from './components';
 export * from './theme';
 export * from './contentTypes';
 export * from './shareStates';
+export * from './voteStates';
+export * from './comment';
 
 export interface IUser {
   id: number | string;
@@ -71,6 +73,12 @@ export interface IPost {
       avatarURL: string;
       name: string;
     };
+    votes: {
+      userId: number;
+      contentId: number;
+      createdAt: string;
+      type: string;
+    }[];
   };
 }
 
