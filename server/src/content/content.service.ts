@@ -14,6 +14,7 @@ import {
   CreateReportDTO,
   GetCollectionInfoDTO,
   GetContentCommentsDTO,
+  GetPrivateKeyDTO,
   JoinCollectionDTO,
   UnVoteContentDTO,
   UpdateReportDTO,
@@ -279,6 +280,13 @@ export class ContentService {
       const newCollection = await this.prisma.collection.create({
         data: {
           title: dto.title,
+          parent: dto.parentId
+            ? {
+                connect: {
+                  id: dto.parentId,
+                },
+              }
+            : undefined,
           content: {
             create: {
               type: 'COLLECTION',
@@ -338,6 +346,8 @@ export class ContentService {
       if (error instanceof PrismaClientKnownRequestError) {
         throw new ForbiddenException(error.message);
       } else {
+        console.log(error);
+
         throw new BadRequestException();
       }
     }
@@ -345,11 +355,18 @@ export class ContentService {
 
   async joinCollection(userId: number, dto: JoinCollectionDTO) {
     try {
-      const reqCollection = await this.prisma.collection.findUnique({
+      const reqCollection = await this.prisma.collection.findFirst({
         where: {
-          id: dto.collectionId,
+          content: !dto.collectionId
+            ? {
+                privateKey: dto.privateKey,
+              }
+            : {
+                id: dto.collectionId,
+              },
         },
         select: {
+          id: true,
           title: true,
           content: {
             select: {
@@ -366,6 +383,9 @@ export class ContentService {
         },
       });
 
+      if (!reqCollection)
+        throw new ForbiddenException("Collection doesn't exist");
+
       if (
         reqCollection.content.privateKey !== dto.privateKey &&
         reqCollection.content.shareState !== 'PUBLIC'
@@ -379,7 +399,7 @@ export class ContentService {
         data: {
           content: {
             connect: {
-              id: dto.collectionId,
+              id: reqCollection.id,
             },
           },
           user: {
@@ -401,6 +421,7 @@ export class ContentService {
       } else if (error instanceof ForbiddenException) {
         throw error;
       } else {
+        console.log(error);
         throw new BadRequestException();
       }
     }
@@ -461,6 +482,35 @@ export class ContentService {
                   id: true,
                   title: true,
                   createdAt: true,
+                  childs: {
+                    select: {
+                      id: true,
+                      title: true,
+                      createdAt: true,
+                      content: {
+                        select: {
+                          categories: true,
+                          votes: {
+                            where: {
+                              userId: reqUserId,
+                            },
+                          },
+                          author: {
+                            select: {
+                              id: true,
+                              name: true,
+                              avatarURL: true,
+                            },
+                          },
+                          accessibleBy: {
+                            where: {
+                              userId: reqUserId,
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
                   posts: {
                     select: {
                       post: {
@@ -469,6 +519,91 @@ export class ContentService {
                           id: true,
                           type: true,
                           mediaURL: true,
+                          content: {
+                            select: {
+                              categories: true,
+                              votes: {
+                                where: {
+                                  userId: reqUserId,
+                                },
+                              },
+                              author: {
+                                select: {
+                                  id: true,
+                                  name: true,
+                                  avatarURL: true,
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+              votes: {
+                where: {
+                  userId: reqUserId,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (!checkPermission)
+        throw new ForbiddenException(
+          "This user does'nt have permission to access this content",
+        );
+
+      return checkPermission;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        throw new ForbiddenException(error.message);
+      } else if (error instanceof ForbiddenException) {
+        throw error;
+      } else {
+        throw new BadRequestException();
+      }
+    }
+  }
+
+  async getRootCollections(reqUserId: number) {
+    try {
+      const checkPermission = await this.prisma.accessible.findMany({
+        where: {
+          userId: reqUserId,
+          content: {
+            author: {
+              id: reqUserId,
+            },
+            collection: {
+              parentId: null,
+            },
+          },
+        },
+        select: {
+          content: {
+            select: {
+              collection: {
+                select: {
+                  id: true,
+                  title: true,
+                  createdAt: true,
+                  content: {
+                    select: {
+                      categories: true,
+                      votes: {
+                        where: {
+                          userId: reqUserId,
+                        },
+                      },
+                      author: {
+                        select: {
+                          id: true,
+                          name: true,
+                          avatarURL: true,
                         },
                       },
                     },
@@ -483,6 +618,41 @@ export class ContentService {
       if (!checkPermission)
         throw new ForbiddenException(
           "This user does'nt have permission to access this content",
+        );
+
+      return checkPermission;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        throw new ForbiddenException(error.message);
+      } else if (error instanceof ForbiddenException) {
+        throw error;
+      } else {
+        throw new BadRequestException();
+      }
+    }
+  }
+
+  async getPrivateKey(reqUserId: number, dto: GetPrivateKeyDTO) {
+    try {
+      const checkPermission = await this.prisma.accessible.findUnique({
+        where: {
+          userId_contentId: {
+            contentId: dto.contentId,
+            userId: reqUserId,
+          },
+        },
+        select: {
+          content: {
+            select: {
+              privateKey: true,
+            },
+          },
+        },
+      });
+
+      if (!checkPermission)
+        throw new ForbiddenException(
+          "You don't have permission to access this content",
         );
 
       return checkPermission;
@@ -567,6 +737,7 @@ export class ContentService {
             categories: true,
             author: {
               select: {
+                id: true,
                 avatarURL: true,
                 name: true,
               },
@@ -574,8 +745,8 @@ export class ContentService {
             votes: {
               where: {
                 userId: reqUserId,
-              }
-            }
+              },
+            },
           },
         },
       },

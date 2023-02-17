@@ -1,25 +1,28 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Platform, Linking } from 'react-native';
-import { Entypo, Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
 
-import { Block, Button, Image, Text } from '../components/';
-import { useData, useTheme, useTranslation } from '../hooks/';
+import { Block, Button, Image, Text } from '../components';
+import { useData, useTheme, useTranslation } from '../hooks';
 import { ChangeAvatarButton } from '../components/Buttons/ChangeAvatarButton';
 import { IUser, VoteState } from '../constants/types';
-import { Box, ScrollView, Stack, Divider } from 'native-base';
+import { Box, ScrollView, Stack } from 'native-base';
 import ProfileCollection from '../components/Collection/ProfileCollection/ProfileCollection';
-import CreateCollectionButton from '../components/Buttons/Collection/CreateCollectionButton';
-import JoinCollectionButton from '../components/Buttons/Collection/JoinCollectionButton/JoinCollectionButton';
 
 const isAndroid = Platform.OS === 'android';
 
-const Profile = () => {
+const OtherProfile = (props: {
+  route: {
+    params: {
+      userId: number;
+    };
+  };
+}) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const { assets, colors, sizes } = useTheme();
-
-  const { callAPI, setAccessToken } = useData();
+  const { callAPI } = useData();
 
   const defaultAvatar =
     'https://firebasestorage.googleapis.com/v0/b/mediashare-7dd4d.appspot.com/o/Avatars%2Fdefault.png?alt=media&token=7de5f2e3-c35d-4c71-b324-a9191653c8c3';
@@ -55,7 +58,10 @@ const Profile = () => {
   );
 
   const getUserInfo = async () => {
-    const res: any = await callAPI('ME', 'GET');
+    const data = {
+      userId: props.route.params.userId,
+    };
+    const res: any = await callAPI('GET_PROFILE', 'POST', data);
     const user: IUser = res.data;
     if (user === undefined) navigation.navigate(t('screens.register'));
     else
@@ -66,7 +72,7 @@ const Profile = () => {
           followers: 0,
           following: 0,
         },
-        about: 'About me!',
+        about: 'Other profile',
         social: { twitter: 'https://twitter.com/krazezt' },
       });
   };
@@ -152,21 +158,6 @@ const Profile = () => {
                     color={colors.white}
                   />
                 </Button>
-                <Button
-                  shadow={false}
-                  radius={sizes.m}
-                  color="rgba(255,255,255,0.2)"
-                  outlined={String(colors.white)}
-                  onPress={() => {
-                    setAccessToken('');
-                    navigation.navigate(t('screens.register'));
-                  }}>
-                  <Ionicons
-                    size={18}
-                    name="log-out-outline"
-                    color={colors.white}
-                  />
-                </Button>
               </Block>
             </Block>
           </Image>
@@ -227,11 +218,15 @@ const Profile = () => {
           <Block paddingHorizontal={sizes.sm} marginTop={sizes.s}>
             <Block row align="center" justify="space-between">
               <Text h5 semibold>
-                {t('common.myCollections')}
+                {t('common.publicCollection')}
               </Text>
-              <CreateCollectionButton afterCreate={() => getUserInfo()} />
+              <Button>
+                <Text p primary semibold>
+                  {t('common.viewall')}
+                </Text>
+              </Button>
             </Block>
-            <Box marginTop={2}>
+            <Box>
               <ScrollView horizontal={true}>
                 <Stack direction="row" space={3}>
                   {user.accessibleTo.map((item) => {
@@ -240,34 +235,36 @@ const Profile = () => {
                         ? VoteState.NONE
                         : VoteState.LIKED;
 
-                    if (item.content.author.id === user.id)
-                      return (
-                        item.content.type === 'COLLECTION' && (
-                          <ProfileCollection.Me
-                            avatarUri={user.avatarURL}
-                            contentId={item.content.id}
-                            categories={item.content.categories}
-                            key={item.content.id}
-                            currentVoteState={currVoteState}
-                            authorId={item.content.author.id}
-                            title={item.content.collection.title}
-                          />
-                        )
-                      );
+                    return (
+                      item.content.type === 'COLLECTION' && (
+                        <ProfileCollection.Other
+                          avatarUri={user.avatarURL}
+                          contentId={item.content.id}
+                          categories={item.content.categories}
+                          key={item.content.id}
+                          currentVoteState={currVoteState}
+                          authorId={item.content.author.id}
+                          title={item.content.collection.title}
+                        />
+                      )
+                    );
                   })}
                 </Stack>
               </ScrollView>
             </Box>
           </Block>
-          <Divider margin={3} thickness={3} />
-          <Block paddingHorizontal={sizes.sm}>
+          {/* <Block paddingHorizontal={sizes.sm} marginTop={sizes.s}>
             <Block row align="center" justify="space-between">
               <Text h5 semibold>
                 {t('common.joinedCollection')}
               </Text>
-              <JoinCollectionButton.Profile afterJoin={() => getUserInfo()} />
+              <Button>
+                <Text p primary semibold>
+                  {t('common.viewall')}
+                </Text>
+              </Button>
             </Block>
-            <Box paddingTop={2}>
+            <Box>
               <ScrollView horizontal={true}>
                 <Stack direction="row" space={3}>
                   {user.accessibleTo.map((item) => {
@@ -275,30 +272,15 @@ const Profile = () => {
                       item.content.votes.length === 0
                         ? VoteState.NONE
                         : VoteState.LIKED;
-
-                    if (item.content.author.id !== user.id)
-                      return (
-                        item.content.type === 'COLLECTION' && (
-                          <ProfileCollection.Other
-                            avatarUri={user.avatarURL}
-                            contentId={item.content.id}
-                            categories={item.content.categories}
-                            key={item.content.id}
-                            currentVoteState={currVoteState}
-                            authorId={item.content.author.id}
-                            title={item.content.collection.title}
-                          />
-                        )
-                      );
                   })}
                 </Stack>
               </ScrollView>
             </Box>
-          </Block>
+          </Block> */}
         </Block>
       </Block>
     </Block>
   );
 };
 
-export default Profile;
+export default OtherProfile;

@@ -8,6 +8,7 @@ const btnSize = 10;
 
 export default function ImageViewerButtonGroup(props: {
   contentId: number;
+  authorId: number;
   imageUri: string;
 }) {
   const [open, setOpen] = useState<boolean>(false);
@@ -50,7 +51,11 @@ export default function ImageViewerButtonGroup(props: {
       <Center width="100%" alignItems="center">
         <Stack direction="row" space={5}>
           <Center size={btnSize}>
-            <ContentSubMenuButton contentId={props.contentId} size={12}/>
+            <ContentSubMenuButton
+              contentId={props.contentId}
+              size={12}
+              authorId={props.authorId}
+            />
           </Center>
           <Center size={btnSize}>
             <Icon

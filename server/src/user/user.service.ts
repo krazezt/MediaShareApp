@@ -27,24 +27,49 @@ export class UserService {
           email: true,
           avatarURL: true,
           accessibleTo: {
+            where: {
+              content: {
+                OR: [
+                  {
+                    collection: {
+                      parentId: null,
+                    },
+                  },
+                  {
+                    type: 'POST',
+                  },
+                ],
+              },
+            },
             select: {
               content: {
                 select: {
+                  votes: {
+                    where: {
+                      userId: (req.user as User).id,
+                    },
+                    select: {
+                      userId: true,
+                      contentId: true,
+                      createdAt: true,
+                      type: true,
+                    },
+                  },
+                  id: true,
                   author: {
                     select: {
+                      id: true,
                       avatarURL: true,
                       name: true,
                     },
                   },
                   collection: {
                     select: {
-                      id: true,
                       title: true,
                     },
                   },
                   post: {
                     select: {
-                      id: true,
                       caption: true,
                       type: true,
                       mediaURL: true,
@@ -106,16 +131,60 @@ export class UserService {
           name: true,
           email: true,
           avatarURL: true,
-          contents: {
+          accessibleTo: {
             where: {
-              type: 'COLLECTION',
-              shareState: 'PUBLIC',
+              content: {
+                OR: [
+                  {
+                    collection: {
+                      parentId: null,
+                      content: {
+                        shareState: "PUBLIC"
+                      }
+                    },
+                  },
+                  {
+                    type: 'POST',
+                  },
+                ],
+              },
             },
             select: {
-              collection: {
+              content: {
                 select: {
-                  title: true,
+                  votes: {
+                    where: {
+                      userId: dto.userId,
+                    },
+                    select: {
+                      userId: true,
+                      contentId: true,
+                      createdAt: true,
+                      type: true,
+                    },
+                  },
                   id: true,
+                  author: {
+                    select: {
+                      id: true,
+                      avatarURL: true,
+                      name: true,
+                    },
+                  },
+                  collection: {
+                    select: {
+                      title: true,
+                    },
+                  },
+                  post: {
+                    select: {
+                      caption: true,
+                      type: true,
+                      mediaURL: true,
+                    },
+                  },
+                  categories: true,
+                  type: true,
                 },
               },
             },

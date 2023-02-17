@@ -103,18 +103,21 @@ export default function CommentViewerButton(props: { contentId: number }) {
           </Modal.Footer>
         </Modal.Content>
       </Modal>
-      <Box marginTop="2">
-        <Icon
-          as={MaterialCommunityIcons}
-          name="comment-text-outline"
-          size="6rem"
-          color="purple.400"
-          onPress={() => {
-            getData();
-            setOpen(true);
-          }}
-        />
-      </Box>
+      <IconButton
+        py={1}
+        onPress={() => {
+          getData();
+          setOpen(true);
+        }}
+        icon={
+          <Icon
+            as={MaterialCommunityIcons}
+            name="comment-text-outline"
+            size="6rem"
+            color="purple.400"
+          />
+        }
+      />
     </>
   );
 }

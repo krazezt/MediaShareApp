@@ -47,6 +47,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
     method: 'GET' | 'POST',
     data?: any,
     formData: boolean = false,
+    alert: boolean = true,
   ): Promise<AxiosResponse | undefined> => {
     let result: AxiosResponse;
     const headers = {
@@ -73,14 +74,17 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
       if (error.response) {
         if (error.response.status === 401) {
           setAccessToken('');
-          Alert.alert(
-            'Session Expired',
-            'Your session is expired, please login again!',
-            [{ text: 'OK', onPress: () => {} }],
-          );
+          if (alert)
+            Alert.alert(
+              'Session Expired',
+              'Your session is expired, please login again!',
+              [{ text: 'OK', onPress: () => {} }],
+            );
         } else {
-          console.log(error.response)
-          Alert.alert('Something happened!', error.message, [{ text: 'OK' }]);
+          if (alert)
+            Alert.alert('Something happened!', err.response.data.message, [
+              { text: 'OK' },
+            ]);
         }
       }
     }

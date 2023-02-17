@@ -17,6 +17,7 @@ import {
   CreateReportDTO,
   GetCollectionInfoDTO,
   GetContentCommentsDTO,
+  GetPrivateKeyDTO,
   JoinCollectionDTO,
   UnVoteContentDTO,
   UpdateReportDTO,
@@ -142,12 +143,33 @@ export class ContentController {
 
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtGuard)
-  @Get('get-collection-info')
+  @Post('get-collection-info')
   async getCollectionInfo(
     @Req() req: Request,
     @Body() body: GetCollectionInfoDTO,
   ) {
     const res = await this.contentService.getCollectionInfo(
+      (req.user as User).id,
+      body,
+    );
+    return res;
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtGuard)
+  @Get('get-root-collections')
+  async getRootCollections(@Req() req: Request) {
+    const res = await this.contentService.getRootCollections(
+      (req.user as User).id,
+    );
+    return res;
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtGuard)
+  @Post('get-private-key')
+  async getPrivateKey(@Req() req: Request, @Body() body: GetPrivateKeyDTO) {
+    const res = await this.contentService.getPrivateKey(
       (req.user as User).id,
       body,
     );

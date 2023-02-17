@@ -113,11 +113,14 @@ model Post {
 }
 
 model Collection {
-  id            Int       @id
+  id            Int           @id
+  parentId      Int?
   title         String
-  createdAt     DateTime  @default(now())
+  createdAt     DateTime      @default(now())
 
-  content       Content   @relation(fields: [id], references: [id])
+  parent        Collection?   @relation(fields: [parentId], references: [id], "CollectionRelation")
+  childs        Collection[]  @relation("CollectionRelation")
+  content       Content       @relation(fields: [id], references: [id])
 
   posts         PostInCollection[]
 }

@@ -46,16 +46,17 @@ export const ChangeAvatarButton = (props: { handleUser: (user: IUser) => void })
       });
       props.handleUser({
         id: 1,
-        name: res?.data.name,
-        department: 'EMT ~!',
+        name: '',
+        email: '',
         stats: {
           posts: 0,
           followers: 0,
           following: 0,
         },
-        about: 'About me!',
-        avatar: res?.data.avatarURL,
+        about: '',
+        avatarURL: res?.data.avatarURL,
         social: { twitter: 'https://twitter.com/krazezt' },
+        accessibleTo: [],
       });
       setIsLoading(false);
       setIsOpen(false);

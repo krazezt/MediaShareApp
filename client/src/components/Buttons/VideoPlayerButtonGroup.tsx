@@ -8,6 +8,7 @@ const btnSize = 10;
 
 export default function VideoPlayerButtonGroup(props: {
   contentId: number;
+  authorId: number;
   videoUri: string;
   videoRef: Video | null;
 }) {
@@ -21,7 +22,7 @@ export default function VideoPlayerButtonGroup(props: {
       <Center width="100%" alignItems="center">
         <Stack direction="row" space={5}>
           <Center size={btnSize}>
-            <ContentSubMenuButton contentId={props.contentId} size={12} />
+            <ContentSubMenuButton contentId={props.contentId} size={12} authorId={props.authorId} />
           </Center>
           <Center size={btnSize}>
             <Icon
