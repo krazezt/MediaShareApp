@@ -1,13 +1,14 @@
-import { Entypo } from '@expo/vector-icons';
-import { Icon, IconButton, Popover, Stack } from 'native-base';
+import { Entypo, FontAwesome } from '@expo/vector-icons';
+import { Button, Icon, IconButton, Popover, Stack } from 'native-base';
 import { ThemeComponentSizeType } from 'native-base/lib/typescript/components/types';
 import React, { useState } from 'react';
-import { useTranslation } from '../../../hooks';
-import JoinCollectionButton from '../Collection/JoinCollectionButton/JoinCollectionButton';
-import NavigateUserButton from '../NavigateUserButton';
-import ReportContentButton from './ReportContentButton';
+import { useTranslation } from '../../../../hooks';
+import GetPrivateKeyButton from '../../ContentActions/GetPrivateKeyButton';
+import ReportContentButton from '../../ContentActions/ReportContentButton';
+import NavigateUserButton from '../../NavigateUserButton';
+import JoinCollectionButton from '../JoinCollectionButton/JoinCollectionButton';
 
-export default function ContentSubMenuButton(props: {
+export default function CollectionMenuButtonOther(props: {
   contentId: number;
   authorId: number;
   size: ThemeComponentSizeType<'Icon'>;
@@ -29,7 +30,7 @@ export default function ContentSubMenuButton(props: {
               as={Entypo}
               name="menu"
               size={props.size}
-              color="violet.400"
+              color="purple.400"
             />
           }
           onPress={() => setMenuOpen(true)}
@@ -43,6 +44,12 @@ export default function ContentSubMenuButton(props: {
             <NavigateUserButton
               userId={props.authorId}
               text={t('common.author')}
+            />
+            <GetPrivateKeyButton contentId={props.contentId} size="md" />
+            <JoinCollectionButton.Popover
+              text={t('common.join')}
+              size="md"
+              collectionId={props.contentId}
             />
             <ReportContentButton
               contentId={props.contentId}

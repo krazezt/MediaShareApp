@@ -8,17 +8,44 @@ export * from './components';
 export * from './theme';
 export * from './contentTypes';
 export * from './shareStates';
-export * from './voteStates';
+export * from './vote';
 export * from './comment';
+export * from './collection';
 
 export interface IUser {
-  id: number | string;
-  name?: string;
-  department?: string;
-  avatar?: string;
-  stats?: { posts?: number; followers?: number; following?: number };
+  id: number;
+  name: string;
+  email: string;
+  avatarURL: string;
+  about: string;
   social?: { twitter?: string; dribbble?: string };
-  about?: string;
+  stats: {
+    posts: number;
+    followers: number;
+    following: number;
+  };
+  accessibleTo: {
+    content: {
+      id: number;
+      author: {
+        id: number;
+        avatarURL: string;
+        name: string;
+      };
+      collection: {
+        title: string;
+      };
+      votes: {
+        userId: number;
+        contentId: number;
+        createdAt: string;
+        type: string;
+      }[];
+      post: null;
+      categories: [{ name: string }];
+      type: 'COLLECTION' | 'POST';
+    };
+  }[];
 }
 
 export interface ICategory {
@@ -70,6 +97,7 @@ export interface IPost {
   content: {
     categories: { name: string }[];
     author: {
+      id: number;
       avatarURL: string;
       name: string;
     };

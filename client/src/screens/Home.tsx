@@ -8,6 +8,7 @@ import { EContentType, VoteState } from '../constants/types';
 import ImageViewerCard from '../components/MediaPlayerCards/ImageViewerCard';
 import MusicPlayerCard from '../components/MediaPlayerCards/MusicPlayerCard';
 import VideoPlayerCard from '../components/MediaPlayerCards/VideoPlayerCard';
+import PostCard from '../components/MediaPlayerCards/PostCard';
 
 enum ETabs {
   EXPLORE,
@@ -121,50 +122,20 @@ const Home = () => {
                   ? VoteState.NONE
                   : VoteState.LIKED;
 
-              switch (item.type) {
-                case EContentType.IMAGE:
-                  return (
-                    <ImageViewerCard
-                      avatarUri={item.content.author.avatarURL}
-                      contentId={item.id}
-                      imageUri={item.mediaURL}
-                      key={index}
-                      categories={item.content.categories}
-                      author={item.content.author.name}
-                      description={item.caption}
-                      currentVoteState={currVoteState}
-                    />
-                  );
-                case EContentType.MUSIC:
-                  return (
-                    <MusicPlayerCard
-                      avatarUri={item.content.author.avatarURL}
-                      contentId={item.id}
-                      audioUri={item.mediaURL}
-                      key={index}
-                      categories={item.content.categories}
-                      author={item.content.author.name}
-                      description={item.caption}
-                      currentVoteState={currVoteState}
-                    />
-                  );
-                case EContentType.VIDEO:
-                  return (
-                    <VideoPlayerCard
-                      avatarUri={item.content.author.avatarURL}
-                      contentId={item.id}
-                      videoUri={item.mediaURL}
-                      key={index}
-                      categories={item.content.categories}
-                      author={item.content.author.name}
-                      description={item.caption}
-                      currentVoteState={currVoteState}
-                    />
-                  );
-
-                default:
-                  break;
-              }
+              return (
+                <PostCard
+                  authorId={item.content.author.id}
+                  avatarUri={item.content.author.avatarURL}
+                  contentId={item.id}
+                  mediaURL={item.mediaURL}
+                  key={index}
+                  categories={item.content.categories}
+                  authorName={item.content.author.name}
+                  description={item.caption}
+                  currentVoteState={currVoteState}
+                  type={item.type}
+                />
+              );
             })}
           </Stack>
         </Block>

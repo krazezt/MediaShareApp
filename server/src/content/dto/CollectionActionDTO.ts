@@ -8,6 +8,10 @@ class CreateCollectionDTO {
 
   @IsNotEmpty()
   shareState: Accessibility;
+
+  @IsNumber()
+  @IsNotEmpty()
+  parentId: number
 }
 
 class JoinCollectionDTO {
@@ -36,4 +40,10 @@ class GetCollectionInfoDTO {
   collectionId: number;
 }
 
-export { CreateCollectionDTO, JoinCollectionDTO, AddPostToCollectionDTO, GetCollectionInfoDTO };
+class GetPrivateKeyDTO {
+  @IsNumber()
+  @IsNotEmpty()
+  contentId: number;
+}
+
+export { CreateCollectionDTO, JoinCollectionDTO, AddPostToCollectionDTO, GetCollectionInfoDTO, GetPrivateKeyDTO };

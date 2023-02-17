@@ -6,6 +6,7 @@ type TCallAPIFunc = (
   method: 'GET' | 'POST',
   data?: any,
   formData?: boolean,
+  alert?: boolean,
 ) => Promise<AxiosResponse | undefined>;
 
 export { TCallAPIFunc };

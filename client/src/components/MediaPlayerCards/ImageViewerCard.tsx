@@ -16,7 +16,6 @@ import { Entypo } from '@expo/vector-icons';
 import ImageViewerButtonGroup from '../Buttons/ImageViewerButtonGroup';
 import { VoteState } from '../../constants/types';
 import ContentActionButtonGroup from '../Buttons/ContentActionButtonGroup';
-import ReportContentButton from '../Buttons/ContentActions/ReportContentButton';
 
 export default function ImageViewerCard(props: {
   avatarUri: string;
@@ -25,6 +24,7 @@ export default function ImageViewerCard(props: {
   categories: { name: string }[];
   description: string;
   author: string;
+  authorId: number;
   currentVoteState: VoteState;
 }) {
   //const categories: string[] = props.categories.map((item) => item.name);
@@ -87,6 +87,7 @@ export default function ImageViewerCard(props: {
             <ImageViewerButtonGroup
               contentId={props.contentId}
               imageUri={props.imageUri}
+              authorId={props.authorId}
             />
           </Box>
         </Box>

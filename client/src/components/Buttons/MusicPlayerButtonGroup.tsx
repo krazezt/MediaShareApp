@@ -8,6 +8,7 @@ const btnSize = 10;
 
 export default function MusicPlayerButtonGroup(props: {
   contentId: number;
+  authorId: number;
   audioUri: string;
 }) {
   const { playSound, stopSound, playingMusicId } = useData();
@@ -24,7 +25,11 @@ export default function MusicPlayerButtonGroup(props: {
     <Center width="100%" alignItems="center">
       <Stack direction="row" space={5}>
         <Center size={btnSize}>
-          <ContentSubMenuButton contentId={props.contentId} size={12} />
+          <ContentSubMenuButton
+            contentId={props.contentId}
+            size={12}
+            authorId={props.authorId}
+          />
         </Center>
         <Center size={btnSize}>
           {playingMusicId === props.contentId ? (

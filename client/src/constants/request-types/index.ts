@@ -1,8 +1,10 @@
 import { ShareState } from '../types';
 
-export interface ICreateContentImageRequest {
+interface ICreateContentImageRequest {
   caption: string;
   mediaURL: string;
   shareState: ShareState;
   categories: string[];
 }
+
+export { ICreateContentImageRequest };

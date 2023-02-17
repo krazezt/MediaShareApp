@@ -1,12 +1,12 @@
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { AxiosError, AxiosResponse } from 'axios';
-import { Box, Flex, Icon, IconButton } from 'native-base';
-import React, { useEffect, useState } from 'react';
+import { Box, Flex, Icon } from 'native-base';
+import React, { useEffect, useRef, useState } from 'react';
 import { Alert } from 'react-native';
-import { VoteState } from '../../constants/types';
-import { useData } from '../../hooks';
-import SaveToCollectionButton from './ContentActions/SaveToCollectionButton';
-import CommentViewerButton from './ContentActions/CommentViewerButton';
+import { VoteState } from '../../../../constants/types';
+import { useData } from '../../../../hooks';
+import CommentViewerButton from '../../ContentActions/CommentViewerButton';
+import CollectionMenuButton from '../CollectionMenuButton/CollectionMenuButton';
 
 const getNextVoteState = (currentVoteState: VoteState) => {
   switch (currentVoteState) {
@@ -26,42 +26,34 @@ const getVoteButton = (
   switch (currentVoteState) {
     case VoteState.NONE:
       return (
-        <IconButton
-          py={1}
+        <Icon
+          left="50%"
+          as={AntDesign}
+          name="like2"
+          size="6rem"
+          color="purple.400"
+          style={[
+            {
+              transform: [{ rotateY: '180deg' }],
+            },
+          ]}
           onPress={onPressFunction}
-          icon={
-            <Icon
-              as={AntDesign}
-              name="like2"
-              size="6rem"
-              color="purple.400"
-              style={[
-                {
-                  transform: [{ rotateY: '180deg' }],
-                },
-              ]}
-            />
-          }
         />
       );
     case VoteState.LIKED:
       return (
-        <IconButton
-          py={1}
+        <Icon
+          left="50%"
+          as={AntDesign}
+          name="like1"
+          size="6rem"
+          color="purple.400"
+          style={[
+            {
+              transform: [{ rotateY: '180deg' }],
+            },
+          ]}
           onPress={onPressFunction}
-          icon={
-            <Icon
-              as={AntDesign}
-              name="like1"
-              size="6rem"
-              color="purple.400"
-              style={[
-                {
-                  transform: [{ rotateY: '180deg' }],
-                },
-              ]}
-            />
-          }
         />
       );
     // case VoteState.DISLIKED:
@@ -84,17 +76,28 @@ const getVoteButton = (
   }
 };
 
-export default function ContentActionButtonGroup(props: {
+export function ProfileOtherCollectionActionButtonGroup(props: {
   currentVoteState: VoteState;
   contentId: number;
+  authorId: number;
 }) {
   const { callAPI } = useData();
 
   const [voteState, setVoteState] = useState<VoteState>(VoteState.NONE);
+  const isComponentMounted = useRef(false);
 
   useEffect(() => {
-    setVoteState(props.currentVoteState);
+    isComponentMounted.current = true;
+    return () => {
+      isComponentMounted.current = false;
+    };
   }, []);
+
+  useEffect(() => {
+    if (isComponentMounted.current) {
+      setVoteState(props.currentVoteState);
+    }
+  }, [props.currentVoteState]);
 
   const changeLikeState = async () => {
     try {
@@ -129,16 +132,17 @@ export default function ContentActionButtonGroup(props: {
         borderTopColor="blue.100"
         direction={'row'}
         width="100%"
-        justifyContent="space-between"
-        px={2}>
+        paddingLeft={2}
+        justifyContent="space-between">
         <Box marginTop="2">{getVoteButton(voteState, changeLikeState)}</Box>
-        <Box marginTop="2">
+        <Box left="15%">
           <CommentViewerButton contentId={props.contentId} />
         </Box>
-        <Box marginTop="2">
-          <SaveToCollectionButton
+        <Box right="25%">
+          <CollectionMenuButton.Other
             contentId={props.contentId}
-            afterSaving={() => {}}
+            size={12}
+            authorId={props.authorId}
           />
         </Box>
       </Flex>

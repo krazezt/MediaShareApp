@@ -36,7 +36,7 @@ export class UserController {
   }
 
   @UseGuards(JwtGuard)
-  @Get('/get-profile')
+  @Post('/get-profile')
   @HttpCode(HttpStatus.OK)
   getProfile(@Req() req: Request, @Body() body: GetProfileDTO) {
     return this.userService.getProfile(body);

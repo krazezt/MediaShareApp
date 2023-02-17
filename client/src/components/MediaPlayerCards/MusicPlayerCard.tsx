@@ -16,7 +16,6 @@ import MusicPlayerButtonGroup from '../Buttons/MusicPlayerButtonGroup';
 import { Entypo } from '@expo/vector-icons';
 import { VoteState } from '../../constants/types';
 import ContentActionButtonGroup from '../Buttons/ContentActionButtonGroup';
-import ReportContentButton from '../Buttons/ContentActions/ReportContentButton';
 
 export default function MusicPlayerCard(props: {
   avatarUri: string;
@@ -25,6 +24,7 @@ export default function MusicPlayerCard(props: {
   categories: { name: string }[];
   description: string;
   author: string;
+  authorId: number;
   currentVoteState: VoteState;
 }) {
   //const categories: string[] = props.categories.map((item) => item.name);
@@ -85,6 +85,7 @@ export default function MusicPlayerCard(props: {
             pb={2}>
             <MusicPlayerButtonGroup
               contentId={props.contentId}
+              authorId={props.authorId}
               audioUri={props.audioUri}
             />
           </Box>

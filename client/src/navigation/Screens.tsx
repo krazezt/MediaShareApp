@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StackNavigationOptions } from '@react-navigation/stack';
 import { Articles, Components, Home, Profile, Register, Pro } from '../screens';
 import { useScreenOptions, useTranslation } from '../hooks';
+import OtherProfile from '../screens/OtherProfile';
 
 const Stack = createStackNavigator();
 interface StackNavigation {
@@ -39,6 +40,11 @@ export default () => {
     {
       name: t('screens.profile'),
       component: Profile,
+      options: { headerShown: false },
+    },
+    {
+      name: t('screens.otherProfile'),
+      component: OtherProfile,
       options: { headerShown: false },
     },
     {

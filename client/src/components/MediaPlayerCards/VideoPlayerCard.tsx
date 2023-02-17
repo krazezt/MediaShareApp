@@ -12,13 +12,12 @@ import {
   Center,
   Button,
 } from 'native-base';
-import { AntDesign, Entypo } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 import { Video } from 'expo-av';
 import VideoPlayerButtonGroup from '../Buttons/VideoPlayerButtonGroup';
 import { getVideoURI } from '../../functions/GetAssetURI';
 import { VoteState } from '../../constants/types';
 import ContentActionButtonGroup from '../Buttons/ContentActionButtonGroup';
-import ReportContentButton from '../Buttons/ContentActions/ReportContentButton';
 
 export default function VideoPlayerCard(props: {
   avatarUri: string;
@@ -27,6 +26,7 @@ export default function VideoPlayerCard(props: {
   categories: { name: string }[];
   description: string;
   author: string;
+  authorId: number;
   currentVoteState: VoteState;
 }) {
   const [videoRef, setVideoRef] = useState<Video | null>(null);
@@ -103,6 +103,7 @@ export default function VideoPlayerCard(props: {
             pb={2}>
             <VideoPlayerButtonGroup
               contentId={props.contentId}
+              authorId={props.authorId}
               videoUri={getVideoURI(props.videoUri)}
               videoRef={videoRef}
             />
