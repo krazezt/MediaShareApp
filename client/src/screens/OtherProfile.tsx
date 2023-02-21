@@ -114,7 +114,6 @@ const OtherProfile = (props: {
                   {t('common.goBack')}
                 </Text>
               </Button>
-              <ChangeAvatarButton handleUser={handleUser} />
             </Block>
             <Block flex={0} align="center">
               <Image

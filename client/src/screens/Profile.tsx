@@ -135,7 +135,7 @@ const Profile = () => {
                     paddingHorizontal={sizes.m}
                     color="rgba(255,255,255,0.2)">
                     <Text white bold transform="uppercase">
-                      {t('common.follow')}
+                      Settings
                     </Text>
                   </Block>
                 </Button>
